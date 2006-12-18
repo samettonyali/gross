@@ -50,14 +50,14 @@ think they are. `update=gray` will update the datebase only in case of a
 GRAY response. It is the default. `update=always` will enable enable
 updating in any case. host and port are the ip and port for the server
 to bind(). `filter_bits` is the length of the Bloom filter (actually the
-bit vector length will be 2^filter_bits).
+bit vector length will be `2^filter_bits`).
 
 The server keeps the state information in the Bloom filter bit arrays.
 By the nature of the filters you can insert elements in the filters, but
 not to remove them. So we actually use several filters, and rotate them
 on intervals. The actual filter is just a logical OR of those rotating
 filters. `number_buffers` is the number of the rotating filters, and
-rotate_interval is the interval in seconds. So, 8 buffers with 2 minutes
+`rotate_interval` is the interval in seconds. So, 8 buffers with 2 minutes
 rotate interval will give you approximately 2 `*` 7.5 minutes worth of
 state information. That is, any graylisted triplet will be stored for
 some 15 minutes. Of course, you have to modify the numbers when going
