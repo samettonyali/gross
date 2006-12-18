@@ -1,5 +1,5 @@
 #summary This is the working copy of the INSTALL file of the source package.
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 
 = Requirements =
 
