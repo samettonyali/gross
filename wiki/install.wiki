@@ -83,3 +83,57 @@ statefile=grossd.state
 
 `synchost` is the server ip, and `peerhost` stands for the replication
 partners ip address.
+
+Also, you must create the state file by hand. Try starting the server
+with `-d` command line option, it tells you the size of the state
+file grossd is expecting. You can create the statefile with
+`dd`: `dd if=/dev/zero of=grossd.state bs=1 count=[filesize]`.
+Or, if using Solaris, with `mkfile(1M)`.
+
+If you get this far, you can start the server. I suggest you
+run the server first in foreground with `-d` option. After starting,
+you can test it with `$PREFIX/bin/gclient`. Good luck, and don't
+hesitate to ask me if in doubt!
+
+= MTA Configuration =
+
+== Postfix ===
+
+Although never tested, Gross should work with Postfix's native
+filtering protocol.
+
+== Sun Java System Messaging Server ==
+
+SJSMS needs some mapping entry for queries.
+This is an entry from our production server config:
+
+{{{
+ORIG_MAIL_ACCESS
+
+  TCP|*|*|*|*|*|*|tcp_local|*|*|*  $[/usr/local/gross/lib/grossd/grosscheck.so,grosscheck,
+10.10.13.1,10.10.13.2,1111,$2,$=$8$_,$=$6$_]
+}}}
+
+The server will always query the first server if it's available.
+
+First, when you have only one server, you can test it like this:
+
+{{{
+  TCP|*|*|*|*|*|*|tcp_local|*|*|*  $[/path/to/grosscheck.so,grosscheck,127.0.0.1
+,,1111,$2,$=$8$_,$=$6$_]
+}}}
+
+= Known Issues =
+
+Thread library check fails at least on Solaris 9. You
+must set LDFLAGS="-lpthread" for configuration by hand. 
+
+= Logging and Troubleshooting =
+
+`grossd` logs everything through syslog. Facility is `LOG_MAIL`, loglevel
+defaults to `INFO`. For now, this is only configurable when compiling,
+change the `#define LOGLEVEL` in `include/srvutils.h`
+
+You can enable full debugging by starting grossd on foreground
+with `-d` command line option. In that case grossd will write output
+on standard terminal instead of syslog.
