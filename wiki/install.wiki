@@ -58,7 +58,7 @@ not to remove them. So we actually use several filters, and rotate them
 on intervals. The actual filter is just a logical OR of those rotating
 filters. `number_buffers` is the number of the rotating filters, and
 rotate_interval is the interval in seconds. So, 8 buffers with 2 minutes
-rotate interval will give you approximately 2 * 7.5 minutes worth of
+rotate interval will give you approximately 2 `*` 7.5 minutes worth of
 state information. That is, any graylisted triplet will be stored for
 some 15 minutes. Of course, you have to modify the numbers when going
 into production. Default interval is 3600 seconds. This is the
