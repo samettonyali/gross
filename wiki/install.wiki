@@ -84,16 +84,13 @@ statefile=grossd.state
 `synchost` is the server ip, and `peerhost` stands for the replication
 partners ip address.
 
-Also, you must create the state file by hand. Try starting the server
-with `-d` command line option, it tells you the size of the state
-file grossd is expecting. You can create the statefile with
-`dd`: `dd if=/dev/zero of=grossd.state bs=1 count=[filesize]`.
-Or, if using Solaris, with `mkfile(1M)`.
-
 If you get this far, you can start the server. I suggest you
-run the server first in foreground with `-d` option. After starting,
-you can test it with `$PREFIX/bin/gclient`. Good luck, and don't
-hesitate to ask me if in doubt!
+run the server first in foreground with `-d` option. If you configured 
+statefile, you have to start grossd with `-C`option in order to create the 
+state file.
+
+After starting, you can test it with `$PREFIX/bin/gclient`. 
+Good luck, and don't hesitate to ask me if in doubt!
 
 = MTA Configuration =
 
