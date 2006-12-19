@@ -70,7 +70,8 @@ connection should be graylisted. By sizing the bloom
 filters, you can control the error possibility to meet your
 needs. The right bloom filter size depends on the number
 of entries in the database, that is, the retention time
-versus the number of handled connections.[1]
+versus the number of handled connections. 
+[http://en.wikipedia.org/wiki/Bloom_filter]
 
 DNS queries are done asynchronously using 
 [http://daniel.haxx.se/projects/c-ares/ c-ares] library. 
