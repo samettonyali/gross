@@ -3,7 +3,15 @@
 
 = Requirements =
 
-You'll need a decent compiler, we have tested gcc on FreeBSD and
+Gross is currently known to work on
+  * Solaris
+  * Linux
+  * FreeBSD
+  * Mac OS X
+
+Mac OS X support is slightly limited. Skipping unresponsive dnsbls does not work, as OS X lacks sem_getvalue().
+
+You'll need a decent compiler, we have tested gcc on FreeBSD and Linux and
 Sun Studio 8 on Solaris Sparc.
 
 In order to configure dnsbl queries you need [http://daniel.haxx.se/projects/c-ares/ c-ares] library for
