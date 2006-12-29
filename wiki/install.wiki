@@ -105,7 +105,17 @@ Good luck, and don't hesitate to ask me if in doubt!
 == Postfix ===
 
 Although never tested, Gross should work with Postfix's native
-filtering protocol.
+filtering protocol. 
+
+Add the following in `main.cf`:
+
+{{{
+smtpd_recipient_restrictions =
+        reject_unauth_destination
+        check_policy_service inet:127.0.0.1:1111
+}}}
+
+That should enable postfix to send queries to grossd running at localhost port 1111.
 
 == Sun Java System Messaging Server ==
 
