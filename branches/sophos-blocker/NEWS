@@ -1,0 +1,25 @@
+Version 0.6.3-svn
+
+Ported to OS X. Since sem_getvalue() is not implemented on 
+OS X, skipping unresponsive dnsbls does not work, yet.
+
+Version 0.6.2
+
+Issues fixed:
+#1: -lpthread also on Solaris 9.
+#2: Logging has been trimmed down.
+#7: Libdir is now installed same as other directories.
+#8: Removed relays.ordb.org from example config.
+#9: SJSMS client library path corrected in INSTALL.
+#10: Default config file path is now correct with default prefix.
+#11: Implemented -D command line option for enabling debug logging.
+#12: grosscheck now sends empty sender address as <> in query to grossd.
+
+- Installs libraries to $prefix/lib/ instead of previous
+$prefix/lib/gross/
+
+Version 0.6.1
+
+- You can now create statfile with grossd -C command line option
+- Config file defaults to $sysconfdir/grossd.conf
+- example config in doc/examples/grossd.conf
