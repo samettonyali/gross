@@ -35,7 +35,7 @@ Default configuration is not yet included in the source package, so you
 need to write `$PREFIX/etc/grossd.conf` yourself. Here is an example:
 
 {{{
-#update=gray
+#update=grey
 dnsbl=bl.spamcop.net
 dnsbl=relays.ordb.org
 dnsbl=sbl.spamhaus.org
@@ -47,9 +47,9 @@ port=1111
 filter_bits=21
 number_buffers=8
 rotate_interval=120 # 2 minutes
-#synchost=
-#syncport=
-#peerhost=
+#sync_peer=
+#sync_listen=
+#sync_port=
 #statefile=/tmp/grossd.state
 }}}
 
@@ -81,15 +81,14 @@ dnsbl=dnsbl.njabl.org
 dnsbl=cbl.abuseat.org
 dnsbl=xbl.smaphaus.org
 dnsbl=dnsbl.sorbs.net
-host=localhost
-synchost=10.10.13.1
-peerhost=10.10.13.2
+sync_listen=10.10.13.1
+sync_peerpeer=10.10.13.2
 number_buffers=12
 filter_bits=24
-statefile=grossd.state
+statefile=/usr/local/gross/etc/grossd.state
 }}}
 
-`synchost` is the server ip, and `peerhost` stands for the replication
+`sync_listen` is the server ip, and `sync_peer` stands for the replication
 partners ip address.
 
 If you get this far, you can start the server. I suggest you
@@ -146,8 +145,7 @@ and known issues.
 = Logging and Troubleshooting =
 
 `grossd` logs everything through syslog. Facility is `LOG_MAIL`, loglevel
-defaults to `INFO`. For now, this is only configurable when compiling,
-change the `#define LOGLEVEL` in `include/srvutils.h`
+defaults to `INFO`. You can set higher debug level by starting grossd with -D command line option.
 
 You can enable full debugging by starting grossd on foreground
 with `-d` command line option. In that case grossd will write output
