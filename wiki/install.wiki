@@ -145,8 +145,8 @@ and known issues.
 = Logging and Troubleshooting =
 
 `grossd` logs everything through syslog. Facility is `LOG_MAIL`, loglevel
-defaults to `INFO`. You can set higher debug level by starting grossd with -D command line option.
+defaults to `INFO`.
 
-You can enable full debugging by starting grossd on foreground
-with `-d` command line option. In that case grossd will write output
-on standard terminal instead of syslog.
+You can enable full debugging by starting grossd with `-D` command line
+option. You may also want `-d`, as grossd then writes output on standard
+terminal instead of syslog.
