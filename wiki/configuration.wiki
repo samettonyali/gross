@@ -9,7 +9,7 @@
   * `stat_interval` is the number of _seconds_ between statistics logging
   * `stat_level` is the name of the requested statistic. There can be multiple `stat_level` options in the configuration file (Using both `none` and `full` is undefined). Valid options are currently:
     * `full` = *grossd* sends all possible statistics
-    * `none' = *grossd* will not send any statistics
+    * `none` = *grossd* will not send any statistics
     * `status` = *grossd* will send basic statistics from the `stat_interval` period
     * `since_startup` = *grossd* will send basic statistics since the server startup
   * ...
