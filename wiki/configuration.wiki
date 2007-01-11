@@ -20,6 +20,8 @@
   * `sync_listen` is the address of the interface to bind to listen for peer communication
   * `sync_port` is the port number to listen to and connect to in peer communication
   * `statefile` is path to file that is used to store the state (filters etc.) of the _grossd_ instance
-
+  * `log_method` `syslog` is currently the only method implemented.
+  * `log_level` default is `info`, the other valid options are `debug`, `notice`, `error` and `warning`
+  * `syslog_facility` is the facility _syslog_ sends log messages with.
 
 
