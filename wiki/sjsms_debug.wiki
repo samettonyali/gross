@@ -1,0 +1,98 @@
+#summary How to debug SJSMS mappings
+
+= Introduction =
+
+This is a brief document how to debug problems regarding sjsms and gross. It involves setting up an ip alias so that you can test with a client address that ends up greylisted, and relevant configuration for sjsms to get it log enough debugging info to the logs.
+
+= Network configuration =
+
+Set up an ip alias 127.0.0.2 on your mail server host. The exact way to do it depends on your host operating system. Here are some examples:
+
+|| OS  || command ||
+|| Solaris || `ifconfig lo0 addif 127.0.0.2 up` ||
+
+
+= SJSMS configuration =
+
+You have to edit `imta.cnf` and `option.dat` files to enable the debug logging you need. And,
+you must compile and enable the new configuration.
+
+=== imta.cnf ===
+
+Add `slave_debug` keyword to the `tcp_local` channel.
+
+=== option.dat ===
+
+Set `MM_DEBUG=3` in `option.dat` file.
+
+== Enabling the new configuration ==
+
+Run `imsimta cnbuild` to compile the new configuration, and `imsimta restart dispatcher` to make dispatcher aware of the new configuration and the new ip address.
+
+= The log files = 
+
+Done that, SJSMS now makes a new tcp_local_slave.log file after each smtp connection ending up on tcp_local channel. 
+
+== Three excerpts from tcp_local_slave.log files ==
+
+===Example #1 - Gross not running===
+
+As you can see, grosscheck returns $Y after two seconds.
+
+{{{
+08:56:39.33: Mapping 5 applied to TCP|127.0.0.2|25|127.0.0.2|48088|SMTP/|MAIL|tc
+p_local|eino@utu.fi|l|eino3@utu.fi
+08:56:39.33:   Entry #1 matched, pattern "TCP|*|*|*|*|*|*|tcp_local|*|*|*", temp
+late "$[/tmp/gross/lib/grosscheck.so,grosscheck,127.0.0.1,0,1111,$2,$=$8$_,$=$6$
+_]", match #0.
+08:56:39.33:   User routine call: /tmp/gross/lib/grosscheck.so\grosscheck(127.0.
+0.1,0,1111,127.0.0.2,eino@utu.fi,eino@utu.fi) ->
+08:56:41.34:     Returned "$Y".
+}}}
+
+===Example #2 - Gross running: first contact===
+
+This is a first contact: gross tells imta to send a temporary error.
+
+{{{
+09:05:02.87: Mapping 5 applied to TCP|127.0.0.2|25|127.0.0.2|48669|SMTP/|MAIL|tc
+p_local|eino@utu.fi|l|eino@utu.fi
+09:05:02.87:   Entry #1 matched, pattern "TCP|*|*|*|*|*|*|tcp_local|*|*|*", temp
+late "$[/tmp/gross/lib/grosscheck.so,grosscheck,127.0.0.1,0,1111,$2,$=$8$_,$=$6$
+_]", match #0.
+09:05:02.88:   User routine call: /tmp/gross/lib/grosscheck.so\grosscheck(127.0.
+0.1,0,1111,127.0.0.2,eino@utu.fi,eino@utu.fi) ->
+09:05:02.91:     Returned "$X4.4.3|$NPlease$ try$ again$ later".
+}}}
+
+=== Example #3 - Gross running: second attempt ===
+
+Now the same client tries to send message again. Gross shows green light.
+
+{{{
+09:07:37.37: Mapping 5 applied to TCP|127.0.0.2|25|127.0.0.2|48841|SMTP/|MAIL|tc
+p_local|eino@utu.fi|l|eino@utu.fi
+09:07:37.37:   Entry #1 matched, pattern "TCP|*|*|*|*|*|*|tcp_local|*|*|*", temp
+late "$[/tmp/gross/lib/grosscheck.so,grosscheck,127.0.0.1,0,1111,$2,$=$8$_,$=$6$
+_]", match #0.
+09:07:37.37:   User routine call: /tmp/gross/lib/grosscheck.so\grosscheck(127.0.
+0.1,0,1111,127.0.0.2,eino@utu.fi,eino@utu.fi) ->
+09:07:37.37:     Returned "$Y".
+}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
