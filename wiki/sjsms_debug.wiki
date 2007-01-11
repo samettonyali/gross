@@ -1,4 +1,5 @@
 #summary How to debug SJSMS mappings
+#labels Phase-Deploy
 
 = Introduction =
 
@@ -79,7 +80,6 @@ _]", match #0.
 0.1,0,1111,127.0.0.2,eino@utu.fi,eino@utu.fi) ->
 09:07:37.37:     Returned "$Y".
 }}}
-
 
 
 
