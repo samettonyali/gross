@@ -145,7 +145,8 @@ and known issues.
 = Logging and Troubleshooting =
 
 `grossd` logs everything through syslog. Facility is `LOG_MAIL`, loglevel
-defaults to `INFO`.
+defaults to `INFO`. Refer to [sjsms_debug] file for how to debug problems
+with SJSMS.
 
 You can enable full debugging by starting grossd with `-D` command line
 option. You may also want `-d`, as grossd then writes output on standard
