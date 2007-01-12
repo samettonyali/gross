@@ -37,7 +37,6 @@ need to write `$PREFIX/etc/grossd.conf` yourself. Here is an example:
 {{{
 #update=grey
 dnsbl=bl.spamcop.net
-dnsbl=relays.ordb.org
 dnsbl=sbl.spamhaus.org
 dnsbl=dnsbl.njabl.org
 dnsbl=cbl.abuseat.org
@@ -75,7 +74,6 @@ configuration we use on our production servers:
 {{{
 dnsbl=rbl-plus.mail-abuse.org
 dnsbl=bl.spamcop.net
-dnsbl=relays.ordb.org
 dnsbl=sbl.spamhaus.org
 dnsbl=dnsbl.njabl.org
 dnsbl=cbl.abuseat.org
