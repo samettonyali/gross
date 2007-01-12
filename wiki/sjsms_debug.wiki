@@ -24,7 +24,7 @@ Output string: 4.4.3|Please try again later
 Output flags: [0, 'N' (78), 'X' (88)]
 }}}
 
-There you can see grosscheck returning a STATUS_GREY response.
+There you can see grosscheck returning a `STATUS_GREY` response.
 
 = Method Two =
 
@@ -103,7 +103,6 @@ _]", match #0.
 0.1,0,1111,127.0.0.2,eino@utu.fi,eino@utu.fi) ->
 09:07:37.37:     Returned "$Y".
 }}}
-
 
 
 
