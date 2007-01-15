@@ -1,0 +1,65 @@
+Version svn
+
+Issues fixed:
+#23: Customizable SMTP error messages
+#26: connections could come from different IP addresses
+#28: Bug in the mapping file example
+#29: dnsbl tolerance counters not working on OS X
+
+Version 0.7.2
+
+- Configurable log_level and syslog_method.
+- Message queue enhancements under the hood
+- Status counters for various events implemented
+- You can now use host names in the configuration
+
+Issues fixed:
+#20: allow host names in configuration
+#21: A dry run option for testing needed
+#22: configurable logging
+
+Version 0.7.1
+
+A replacement of 0.7.0, there was a bug that prevented grossd
+from compiling --with-worker=postfix.
+
+Version 0.7.0
+
+Implemented a thread pool feature. Worker threads are now 
+reused, instead of firing up one on each connection. Numerous
+bug fixes, most notably byte order related bugs in proto_sjsms.c.
+Some configuration file changes: peerhost and synchost has been
+replaced by sync_listen and sync_peer.
+
+#Issues fixed:
+#15: postfix protocol broken
+#17: proto-sjsms breaks between hosts of different endianess
+
+Version 0.6.3
+
+Ported to OS X. Since sem_getvalue() is not implemented on 
+OS X, skipping unresponsive dnsbls does not work, yet.
+
+Issues fixed:
+#14: processing delay should be included in the logs
+
+Version 0.6.2
+
+Issues fixed:
+#1: -lpthread also on Solaris 9.
+#2: Logging has been trimmed down.
+#7: Libdir is now installed same as other directories.
+#8: Removed relays.ordb.org from example config.
+#9: SJSMS client library path corrected in INSTALL.
+#10: Default config file path is now correct with default prefix.
+#11: Implemented -D command line option for enabling debug logging.
+#12: grosscheck now sends empty sender address as <> in query to grossd.
+
+- Installs libraries to $prefix/lib/ instead of previous
+$prefix/lib/gross/
+
+Version 0.6.1
+
+- You can now create statfile with grossd -C command line option
+- Config file defaults to $sysconfdir/grossd.conf
+- example config in doc/examples/grossd.conf
