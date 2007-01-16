@@ -24,5 +24,6 @@
   * `log_level` default is `info`, the other valid options are `debug`, `notice`, `error` and `warning`
   * `syslog_facility` is the facility _syslog_ sends log messages with.
   * `update` is the way _grossd_ updates its filters. If `update = grey`, filters are only updated if response is `STATUS_GREY`. `update = always` makes _grossd_ to update filters on every query. Default is `grey`.
+  * `greylist_delay` is the number of _seconds_ between accepting the second sending attempt after greylisting. The default value is 10, increasing the delay causes the amortized memory requirement to grow linearly.
 
 
