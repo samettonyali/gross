@@ -22,42 +22,13 @@ asynhronous dns queries.
 You should be able to compile it for testing by just commanding:
 
 {{{
-$ ./configure --with-worker=sjsms --prefix=/tmp/gross
+$ ./configure --prefix=/tmp/gross
 $ make install
 }}}
 
-Default worker protocol is Postfix's, if you use sjsms you must
-specify it excplicitly.
-
 = Basic configuration =
 
-Default configuration is not yet included in the source package, so you
-need to write `$PREFIX/etc/grossd.conf` yourself. Here is an example:
-
-{{{
-#update=grey
-dnsbl=bl.spamcop.net
-dnsbl=sbl.spamhaus.org
-dnsbl=dnsbl.njabl.org
-dnsbl=cbl.abuseat.org
-dnsbl=xbl.spamhaus.org
-host=127.0.0.1
-port=1111
-filter_bits=21
-number_buffers=8
-rotate_interval=120 # 2 minutes
-#sync_peer=
-#sync_listen=
-#sync_port=
-#statefile=/tmp/grossd.state
-}}}
-
-This is a single server configuration. dnsbl entries are just what you'd
-think they are. `update=grey` will update the datebase only in case of a
-STATUS_GREY response. It is the default. `update=always` will enable enable
-updating in any case. host and port are the ip and port for the server
-to bind(). `filter_bits` is the length of the Bloom filter (actually the
-bit vector length will be `2^filter_bits`).
+Example configuration 'doc/examples/grossd.conf' is installed as default config.
 
 The server keeps the state information in the Bloom filter bit arrays.
 By the nature of the filters you can insert elements in the filters, but
@@ -77,14 +48,16 @@ dnsbl=bl.spamcop.net
 dnsbl=sbl.spamhaus.org
 dnsbl=dnsbl.njabl.org
 dnsbl=cbl.abuseat.org
-dnsbl=xbl.spamhaus.org
+dnsbl=xbl.smaphaus.org
 dnsbl=dnsbl.sorbs.net
-host = smtp01
-sync_listen = smtp01
-sync_peerpeer= smtp02
+host=smtp01
+sync_listen=smtp01
+sync_peer=smtp02
 number_buffers=12
 filter_bits=24
 statefile=/usr/local/gross/etc/grossd.state
+stat_type=full
+protocol=sjsms
 }}}
 
 `sync_listen` is the server ip, and `sync_peer` stands for the replication
