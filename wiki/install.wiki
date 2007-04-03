@@ -45,10 +45,8 @@ configuration we use on our production servers:
 {{{
 dnsbl=rbl-plus.mail-abuse.org
 dnsbl=bl.spamcop.net
-dnsbl=sbl.spamhaus.org
-dnsbl=dnsbl.njabl.org
+dnsbl=combined.njabl.org
 dnsbl=cbl.abuseat.org
-dnsbl=xbl.smaphaus.org
 dnsbl=dnsbl.sorbs.net
 host=smtp01
 sync_listen=smtp01
