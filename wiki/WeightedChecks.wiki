@@ -1,0 +1,27 @@
+#summary Weighted Checks Configuration Guide
+#labels Phase-Deploy
+
+= Introduction =
+
+Version svn-236 includes a new feature that allows you to configure weights on different checks. You can also configure thresholds for greylisting and blocking independently.
+
+= Details =
+
+An excerpt from the grossd.conf:
+
+{{{
+check = dnsbl
+check = blocker
+blocker_weight = 8
+dnsbl=bl.spamcop.net;3
+dnsbl=dnsbl.njabl.org;3
+dnsbl=dnsbl.sorbs.net;3
+dnsbl=dnsbl-1.uceprotect.net;3
+dnsbl=dnsbl-2.uceprotect.net;1
+dnsbl=dnsbl-3.uceprotect.net;1
+dnsbl=rbl-plus.mail-abuse.org;6
+dnsbl=zen.spamhaus.org;6
+block_threshold = 9
+}}}
+
+If grossd finds that a client hosts ip matches e.g. both zen.spamhaus.org, weight 6, and bl.spamcop.net, weight 3, the total weight from the cheks is 9. That means grossd will block the connection with a permanent error, because total weight is equal to or greater than block_threshold.
