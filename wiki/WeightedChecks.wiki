@@ -39,4 +39,7 @@ With the configuration options show above, grossd statistics at the University o
   * greylist: 8.3 %
   * block: 82.7 %
 
-Remember, these are recipients, not hosts.
+Remember, these are recipients, not hosts. That means that grossd alone blocks over 90 % of mail, that is well over 95 % of spam with the shown configuration. 
+
+-- 
+  Eino Tuominen
