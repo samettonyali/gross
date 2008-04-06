@@ -5,7 +5,7 @@
 
 == Please note, this file does not contain all the options ==
 
-*check docs/examples/grossd.conf for the complete list*
+*check http://code.google.com/p/gross/source/browse/trunk/doc/examples/grossd.conf for the complete list*
 
   * `dnsbl` option is the address of dns blacklist server. There can be multiple `dnsbl` options in the configuration file and each one will be queried in parallel. As soon as one of the blacklist servers recognizes the senders address, the mail will be greylisted. If none of the blacklist servers contain the senders address, then the sender is *trusted*. These values are unused if _grossd_ is configured with `--disable-dnsbl` flag.
   * `host` option is the address of the interface _grossd_ binds itself, default is `localhost`
@@ -30,4 +30,3 @@
   * `update` is the way _grossd_ updates its filters. If `update = grey`, filters are only updated if response is `STATUS_GREY`. `update = always` makes _grossd_ to update filters on every query. Default is `grey`.
   * `grey_delay` is the number of _seconds_ between accepting the second sending attempt after greylisting. The default value is 10, increasing the delay causes the amortized memory requirement to grow linearly.
   * `grey_mask` is the mask for grossd to use when matching client_ip against the database. You may set it to 24 to treat  addresses like a.b.c.d as a.b.c.0.
-
