@@ -7,7 +7,7 @@ Version svn-236 includes a new feature that allows you to configure weights on d
 
 = Details =
 
-An excerpt from the grossd.conf:
+An excerpt from grossd.conf:
 
 {{{
 check = dnsbl
