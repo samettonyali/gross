@@ -19,7 +19,7 @@ A couple of perfomance tweaks:
 
 Concentrate on Milter possibilities. SJSMS 6.3 has milter support, too. Grossd could (optionally) parse the whole messages finding all the URLs. Spamhaus recommends checking all host IP:s and their name server IPs against the SBL.
 
-= I Don't Know If I'll Ever Have Time For This =
+== I Don't Know If I'll Ever Have Time For This ==
 
 Reputation database for gross and others to query. I'd like to build up a reputation database from grossd and PureMessage logs. It could classify hosts/networks/operators based on the historical email volume and the cleanliness of the mail flow. Then I could find if some network that normally sent us like 10 messages a day, started flooding us 100 messages a minute, and force some throttling policy for the flow.
 
