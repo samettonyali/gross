@@ -14,6 +14,7 @@ This file is for listing all the development ideas for the future. Some of these
 A couple of perfomance tweaks:
   * implement delays for dnsbl checks so that you can fire up a few most effective lists first to catch the majority of spam without all the dns queries. That way you could use lots of lists without being concerned about load on dns resolver.
   * now that all checks may lead blocking the mail there's a need to wait only those checks that can return a STATUS_PASS status. It's a little modification, but I don't want to mess the code before 1.0. I wan't to refactor that worker function anyway, it's such a huge blob...
+  * run all the checks even if triplet matches, and return match only if triplet passes the tests. It must be configurable, though.
 
 == Future ==
 
