@@ -17,7 +17,7 @@ A couple of perfomance tweaks:
 
 == Future ==
 
-Concentrate on Milter possibilities. SJSMS 6.3 has milter support, too. Grossd could (optionally) parse the whole messages finding all the URLs. Spamhaus recommends checking all host IP:s and their name server IPs against the SBL.
+Concentrate on Milter possibilities. SJSMS 6.3 has milter support, too. Grossd could (optionally) parse the whole messages finding all the URLs. Spamhaus recommends checking all host IP's and their name server IP's against the SBL.
 
 == I Don't Know If I'll Ever Have Time For This ==
 
