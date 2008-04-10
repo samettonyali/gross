@@ -7,7 +7,7 @@ This file is for listing all the development ideas for the future. Some of these
 
 == Near Future ==
 
-*Push out version 1.0!* So this means that before it there will be no new features, only bugfixes and minor modifications. After that I'll once again send spa^H^H^Hannouncment on various email lists, notably iMS-info, postfix-users and hied-emailadmin.
+*Push out version 1.0!* So this means that before it there will be no new features, only bugfixes and minor modifications. After that I'll once again send a spa^^^H^^^H^^^Hannouncement on various email lists, notably iMS-info, postfix-users and hied-emailadmin.
 
 == Not So Near Future ==
 
