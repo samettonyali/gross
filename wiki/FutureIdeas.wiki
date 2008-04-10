@@ -1,0 +1,26 @@
+#summary All the great ideas waiting for their times...
+#labels Phase-Requirements
+
+= Introduction =
+
+This file is for listing all the development ideas for the future. Some of these will get implemented while some will be ever forgotten... Just write on the wall and think about the consequenses later...
+
+== Near Future ==
+
+*Push out version 1.0!* So this means that before it there will be no new features, only bugfixes and minor modifications. After that I'll once again send spa^H^H^Hannouncment on various email lists, notably iMS-info, postfix-users and hied-emailadmin.
+
+== Not So Near Future ==
+
+A couple of perfomance tweaks:
+  * implement delays for dnsbl checks so that you can fire up a few most effective lists first to catch the majority of spam without all the dns queries. That way you could use lots of lists without being concerned about load on dns resolver.
+  * now that all checks may lead blocking the mail there's a need to wait only those checks that can return a STATUS_PASS status. It's a little modification, but I don't want to mess the code before 1.0. I wan't to refactor that worker function anyway, it's such a huge blob...
+
+== Future ==
+
+Concentrate on Milter possibilities. SJSMS 6.3 has milter support, too. Grossd could (optionally) parse the whole messages finding all the URLs. Spamhaus recommends checking all host IP:s and their name server IPs against the SBL.
+
+= I Don't Know If I'll Ever Have Time For This =
+
+Reputation database for gross and others to query. I'd like to build up a reputation database from grossd and PureMessage logs. It could classify hosts/networks/operators based on the historical email volume and the cleanliness of the mail flow. Then I could find if some network that normally sent us like 10 messages a day, started flooding us 100 messages a minute, and force some throttling policy for the flow.
+
+That could even be extended to an early warning system if we just figured out how to merge the data from different organizations.
