@@ -5,6 +5,7 @@ Version 0.9-svn
 - new option: pool_maxthreads, you may need to change this
   if you get more than 100 queries per second and/or have
   slow dns servers
+- some log messages got sent with wrong priorities
 
 #56: Grossd skips all the checks if block_threshold not set
 #57: sjsms: query_timelimit is one second off
