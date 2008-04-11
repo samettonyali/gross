@@ -72,7 +72,7 @@ If _block_threshold_ is set to 0, the dnsbl checks will shortcut when the first 
 *Answer*:  See the info-ims@arnold.com mailing list.
 
 == Q: How well does gross scale? ==
-*Answer*:  It scales extremely well.  UW-Madison handles over 10 million message attempts per day, with grossd running on solaris 10 sparse zones on two of their four incoming mail servers (running SJSMS).
+*Answer*:  It scales extremely well.  UW-Madison handles over 10 million message attempts per day, with grossd running on solaris 10 sparse zones on two of their four incoming mail servers (running SJSMS).  Gross saved UW-Madison from a 100 million message spam storm in a single day, without any performance problems (no one even noticed until the next day when we were looking at the reports.)
 
 == Q: What does the error "incrementing tolerance counter for dnsbl" mean? ==
 *Answer*: 
@@ -80,16 +80,11 @@ If _block_threshold_ is set to 0, the dnsbl checks will shortcut when the first 
 == Q: Are there risks of database problems? ==
 *Answer*:  Gross uses [http://pages.cs.wisc.edu/~cao/papers/summary-cache/node8.html bloom filters] for its greylist database.  This means that false positives can be likely (see tuning), but false negatives are impossible, and performance is excellent.
 
-== Q: ? ==
-*Answer*: 
+== Q: I see "matches" for some IPs but there are no corresponding "greylist" logs? ==
+*Answer*:  This means that there are false positives in the bloom filters.  Your mail volumes might be too high, so adjust your filter_bits and rotate_interval accordingly.  If you are using weighted checks, then lower block_theshold, as it will cause fewer updates in the database.
 
-== Q: ? ==
-*Answer*: 
-
-== Q: ? ==
-*Answer*: 
-== Q: ? ==
-*Answer*: 
+== Q: Why are there so many TIME_WAIT connections to the Sophos Blocker? ==
+*Answer*:  Grossd opens a new TCP connection for each blocker query.  This is a problem with the Blocker (we believe).  Try lowering your tcp idle timeout setting.
 
 == Q: ? ==
 *Answer*: 
