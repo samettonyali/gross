@@ -78,7 +78,7 @@ If _block_threshold_ is set to 0, the dnsbl checks will shortcut when the first 
 *Answer*: 
 
 == Q: Are there risks of database problems? ==
-*Answer*:  Gross uses [http://pages.cs.wisc.edu/~cao/papers/summary-cache/node8.html bloom filters] for its greylist database.  This means that false positives can be likely (see tuning), but false negatives are impossible, and performance is excellent.
+*Answer*:  Gross uses [http://pages.cs.wisc.edu/~cao/papers/summary-cache/node8.html bloom filters] for its greylist database.  This means that false positives can be likely (see tuning), but false negatives are impossible, and performance is excellent. False positives here mean false database hits which eventually lead false "matches" in greylisting filte, which leads to spam getting through Gross. If you get more than 10 million messages a day you might need to adjust the default values.
 
 == Q: I see "matches" for some IPs but there are no corresponding "greylist" logs? ==
 *Answer*:  This means that there are false positives in the bloom filters.  Your mail volumes might be too high, so adjust your filter_bits and rotate_interval accordingly.  If you are using weighted checks, then lower block_theshold, as it will cause fewer updates in the database.
