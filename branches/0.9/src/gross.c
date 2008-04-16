@@ -595,6 +595,10 @@ main(int argc, char *argv[])
 	if ((ctx->config.flags & FLG_CREATE_STATEFILE) == FLG_CREATE_STATEFILE)
 		create_statefile();
 
+	/* daemonize must be run before any pthread_create */
+	if ((ctx->config.flags & FLG_NODAEMON) == 0) 
+		daemonize();
+
 	if ((ctx->config.flags & FLG_CREATE_PIDFILE) == FLG_CREATE_PIDFILE) {
 		assert(ctx->config.pidfile);
 		ret = stat(ctx->config.pidfile, &statinfo);
@@ -616,11 +620,6 @@ main(int argc, char *argv[])
 				daemon_shutdown(EXIT_PIDFILE_EXISTS, "pidfile already exists");
 		}
 	}
-
-	/* daemonize must be run before any pthread_create */
-	if ((ctx->config.flags & FLG_NODAEMON) == 0) 
-		daemonize();
-
 
 	/* initialize the update queue */
 	delay = Malloc(sizeof(struct timespec));
