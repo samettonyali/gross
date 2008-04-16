@@ -116,6 +116,6 @@ bloommgr(void *arg)
 void
 bloommgr_init()
 {
-        sem_wait(ctx->sync_guard);
+	sem_wait(ctx->sync_guard);
 	Pthread_create(&ctx->process_parts.bloommgr, &bloommgr, NULL);
 }

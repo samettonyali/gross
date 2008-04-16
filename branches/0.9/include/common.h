@@ -255,6 +255,7 @@ typedef struct {
         thread_collection_t process_parts;
         stats_t stats;
 	check_t *checklist[MAXCHECKS];
+	bool syslog_open;
 } gross_ctx_t;
 
 #ifndef HAVE_USECONDS_T
