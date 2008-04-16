@@ -556,7 +556,7 @@ main(int argc, char *argv[])
 			break;
 		case 'V':
                         printf("grossd - Greylisting of Suspicious Sources. Version %s.\n", VERSION);
-			exit(EXIT_NOERROR);
+			daemon_shutdown(EXIT_NOERROR, NULL);
                         break;
 		case 'C':
                         ctx->config.flags |= FLG_CREATE_STATEFILE;
@@ -595,31 +595,15 @@ main(int argc, char *argv[])
 	if ((ctx->config.flags & FLG_CREATE_STATEFILE) == FLG_CREATE_STATEFILE)
 		create_statefile();
 
+	if (ctx->config.flags & FLG_CHECK_PIDFILE) 
+		check_pidfile();
+
 	/* daemonize must be run before any pthread_create */
 	if ((ctx->config.flags & FLG_NODAEMON) == 0) 
 		daemonize();
 
-	if ((ctx->config.flags & FLG_CREATE_PIDFILE) == FLG_CREATE_PIDFILE) {
-		assert(ctx->config.pidfile);
-		ret = stat(ctx->config.pidfile, &statinfo);
-		if ((ctx->config.flags & FLG_CHECK_PIDFILE) == 0 || ( ret < 0 && errno == ENOENT )) {
-			logstr(GLOG_INFO, "creating pidfile %s", ctx->config.pidfile);
-			pf = fopen(ctx->config.pidfile, "w");
-			if (pf != NULL) {
-				ret = fprintf(pf, "%d", getpid());
-					if (ret < 0)
-						daemon_fatal("writing pidfile");
-			} else {
-				daemon_fatal("opening pidfile: fdopen");
-			}
-			fclose(pf);
-		} else {
-			if (ret < 0)
-				daemon_fatal("stat");
-			else
-				daemon_shutdown(EXIT_PIDFILE_EXISTS, "pidfile already exists");
-		}
-	}
+	if (ctx->config.flags & FLG_CREATE_PIDFILE)
+		create_pidfile();
 
 	/* initialize the update queue */
 	delay = Malloc(sizeof(struct timespec));

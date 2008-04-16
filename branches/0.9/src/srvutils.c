@@ -95,21 +95,23 @@ daemon_shutdown(int return_code, const char *fmt, ...)
         char out[MSGSZ];
         va_list vap;
 
-        /* prepend the reason string */
-        snprintf(logfmt, MSGSZ, "Grossd shutdown with exit code %d: %s", return_code, fmt);
+	if (fmt) {
+		/* prepend the reason string */
+		snprintf(logfmt, MSGSZ, "Grossd shutdown with exit code %d: %s", return_code, fmt);
 
-        va_start(vap, fmt);
-        vsnprintf(out, MSGSZ, logfmt, vap);
-        va_end(vap);
+		va_start(vap, fmt);
+		vsnprintf(out, MSGSZ, logfmt, vap);
+		va_end(vap);
 
-        fprintf(stderr, "%s\n", out);
+		fprintf(stderr, "%s\n", out);
 
-	if (ctx->syslog_open)
-		logstr(GLOG_ERROR, "%s", out);
+		if (ctx->syslog_open)
+			logstr(GLOG_ERROR, "%s", out);
+
+	}
 
 	if (EXIT_NOERROR == return_code && (ctx->config.flags & FLG_CREATE_PIDFILE) && ctx->config.pidfile)
 		unlink(ctx->config.pidfile);
-
         exit(return_code);
 }
 
@@ -365,6 +367,47 @@ build_bloom_ring(unsigned int num, bitindex_t num_bits)
 #endif
 
         return brq;
+}
+
+/*
+ * create_pidfile	- write the process id into the pidfile 
+ */
+void
+create_pidfile(void)
+{
+	FILE *pf;
+	int ret;
+
+	assert(ctx->config.pidfile);
+	logstr(GLOG_INFO, "creating pidfile %s", ctx->config.pidfile);
+	pf = fopen(ctx->config.pidfile, "w");
+	if (pf != NULL) {
+		ret = fprintf(pf, "%d", getpid());
+		if (ret < 0)
+			daemon_fatal("writing pidfile");
+	} else {
+		daemon_fatal("opening pidfile: fdopen");
+	}
+	fclose(pf);
+}
+
+/*
+ * check_pidfile	- returns if pidfile does not exist
+ */
+void
+check_pidfile(void)
+{
+	int ret;
+	struct stat statinfo;
+
+	ret = stat(ctx->config.pidfile, &statinfo);
+	if (ret < 0)
+		if (ENOENT != errno)
+			daemon_fatal("stat");
+		else
+			return;
+	else
+		daemon_shutdown(EXIT_PIDFILE_EXISTS, "pidfile already exists");
 }
 
 /*
