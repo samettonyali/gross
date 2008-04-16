@@ -34,6 +34,7 @@ typedef struct {
 	bool *done;
 	int *timeout;
 	const char *querystr;
+	char *dnslname;
 	edict_t *edict;
 	dns_check_info_t *check_info;
 } callback_arg_t;

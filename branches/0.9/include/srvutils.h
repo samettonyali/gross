@@ -86,14 +86,6 @@ typedef struct {
 	void 	*result;
 } poolresult_message_t;
 
-typedef struct {
-	bool definitive;
-	bool wait;
-	int weight;
-	judgment_t judgment;
-	char *reason;
-} chkresult_t;
-
 /* global context */
 extern gross_ctx_t *ctx;
 

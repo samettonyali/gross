@@ -114,13 +114,14 @@ mlfi_envrcpt(SMFICTX *milter_ctx, char **argv)
 {
 	struct private_ctx_s *priv = MILTER_PRIVATE;
 	grey_tuple_t *tuple;
-	final_status_t status = { '\0' };
+	final_status_t *status;
 	int retvalue = SMFIS_CONTINUE;
 	int ret;
 
 	logstr(GLOG_INSANE, "milter: envrcpt");
 
 	tuple = request_new();
+	status = init_status("milter");
 
 	tuple->sender = strdup(priv->sender);
 	tuple->recipient = strdup(argv[0]);
@@ -128,22 +129,20 @@ mlfi_envrcpt(SMFICTX *milter_ctx, char **argv)
 	if (priv->helo_name)
 		tuple->helo_name = priv->helo_name;
 
-	ret = test_tuple(&status, tuple, NULL);
+	ret = test_tuple(status, tuple, NULL);
 	request_unlink(tuple);
 
-	switch(status.status) {
+	switch(status->status) {
 	case STATUS_GREY:
 		retvalue = SMFIS_TEMPFAIL;
 		break;
 	case STATUS_BLOCK:
-		smfi_setreply(milter_ctx, "550", "5.7.1", status.reason ? status.reason : "rejected by policy");
+		smfi_setreply(milter_ctx, "550", "5.7.1", status->reason ? status->reason : "rejected by policy");
 		retvalue = SMFIS_REJECT;
 		break;
 	}
 
-	if (status.reason)
-		Free(status.reason);
-
+	finalize(status);
 	return retvalue;
 }
 

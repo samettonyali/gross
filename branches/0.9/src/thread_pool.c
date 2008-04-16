@@ -24,6 +24,7 @@
 #include "common.h"
 #include "msgqueue.h"
 #include "srvutils.h"
+#include "worker.h"
 #include "utils.h"
 #include "thread_pool.h"
 

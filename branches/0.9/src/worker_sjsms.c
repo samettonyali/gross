@@ -179,7 +179,7 @@ sjsms_connection(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 	sjsms_msg_t *msg;
 	grey_tuple_t *tuple;
 	char response[MAXLINELEN];
-	final_status_t status = { '\0' };
+	final_status_t *status;
 	int ret;
 	tmout_action_t ta1, ta2;
 	char *mapstr;
@@ -240,23 +240,25 @@ sjsms_connection(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 			goto OUT;
 		}
 
+		status = init_status("sjsms");
+
 		/* We are go */
-		ret = test_tuple(&status, tuple, &ta1);
+		ret = test_tuple(status, tuple, &ta1);
 
 		if (ret < 0) {
 			snprintf(response, MAXLINELEN, "F");
 		} else {
-			switch (status.status) {
+			switch (status->status) {
 			case STATUS_MATCH:
 				snprintf(response, MAXLINELEN, "M %s", ctx->config.sjsms.responsematch);
 				break;
 			case STATUS_GREY:
-				mapstr = assemble_mapresult(ctx->config.sjsms.responsegrey, status.reason);
+				mapstr = assemble_mapresult(ctx->config.sjsms.responsegrey, status->reason);
 				snprintf(response, MAXLINELEN, "G %s", mapstr);
 				Free(mapstr);
 				break;
 			case STATUS_BLOCK:
-				mapstr = assemble_mapresult(ctx->config.sjsms.responseblock, status.reason);
+				mapstr = assemble_mapresult(ctx->config.sjsms.responseblock, status->reason);
 				snprintf(response, MAXLINELEN, "B %s", mapstr);
 				Free(mapstr);
 				break;
@@ -278,7 +280,7 @@ sjsms_connection(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 		delay = ms_diff(&end, &start);
 		logstr(GLOG_DEBUG, "processing delay: %d ms", delay);
 
-		switch (status.status) {
+		switch (status->status) {
 		case STATUS_BLOCK:
 		  block_delay_update((double)delay);
 		  break;
@@ -316,9 +318,7 @@ OUT:
 	free_client_info(client_info);
 	logstr(GLOG_DEBUG, "sjsms_connection returning");
 
-        if (status.reason)
-                Free(status.reason);
-
+	finalize(status);
 	return 1;
 }
 
