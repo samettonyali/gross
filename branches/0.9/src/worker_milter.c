@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007
+ * Copyright (c) 2007, 2008
  *                    Eino Tuominen <eino@utu.fi>
  *                    Antti Siira <antti@utu.fi>
  *
@@ -38,6 +38,7 @@ sfsistat mlfi_helo(SMFICTX *milter_ctx, char *helohost);
 sfsistat mlfi_envfrom(SMFICTX *milter_ctx, char **argv);
 sfsistat mlfi_envrcpt(SMFICTX *milter_ctx, char **argv);
 sfsistat mlfi_close(SMFICTX *milter_ctx);
+static void *milter_server(void *arg);
 
 struct smfiDesc grossfilter =
 {
@@ -65,20 +66,21 @@ mlfi_connect(SMFICTX *milter_ctx, char *hostname, _SOCK_ADDR *hostaddr)
 
 	logstr(GLOG_INSANE, "milter: connect");
 
-	priv = Malloc(sizeof(*priv));
-	bzero(priv, sizeof(*priv));
-
 	client_saddr = (struct sockaddr_in *)hostaddr;
 	if (client_saddr->sin_family != AF_INET) {
 		/* not supported */
-		return SMFIS_CONTINUE;
+		logstr(GLOG_INFO, "milter: unsupported protocol %d", client_saddr->sin_family);
+		return SMFIS_ACCEPT;
 	}
 	
 	if (NULL == inet_ntop(AF_INET, &client_saddr->sin_addr,
 		caddr, INET_ADDRSTRLEN)) {
 		logstr(GLOG_ERROR, "inet_top failed: %s", strerror(errno));
-		return SMFIS_CONTINUE;
+		return SMFIS_ACCEPT;
 	}
+
+	priv = Malloc(sizeof(*priv));
+	bzero(priv, sizeof(*priv));
 	priv->client_address = strdup(caddr);
 	smfi_setpriv(milter_ctx, priv);
 
@@ -102,9 +104,9 @@ mlfi_envfrom(SMFICTX *milter_ctx, char **argv)
 {
 	struct private_ctx_s *priv = MILTER_PRIVATE;
 
-	logstr(GLOG_INSANE, "milter: envfrom");
-
 	priv->sender = strdup(argv[0]);
+
+	logstr(GLOG_INSANE, "milter: envfrom: %s", priv->sender);
 
 	return SMFIS_CONTINUE;
 }
@@ -167,8 +169,8 @@ mlfi_close(SMFICTX *milter_ctx)
 	return SMFIS_CONTINUE;
 }
 
-void
-milter_init()
+static void *
+milter_server(void *arg)
 {
 	int ret;
 	
@@ -185,5 +187,26 @@ milter_init()
 	if (MI_FAILURE == ret)
 		daemon_shutdown(EXIT_FATAL, "smfi_register failed");
 
+	logstr(GLOG_DEBUG, "milter thread calling smfi_main()");
 	smfi_main();
+}
+
+static void *
+milter_watcher(void *arg)
+{
+	int ret;
+
+	ret = pthread_join(*ctx->process_parts.milter_server.thread, NULL);
+	daemon_shutdown(EXIT_NOERROR, "milter exited");
+}
+
+void
+milter_server_init(void)
+{
+        logstr(GLOG_INFO, "starting milter policy server");
+
+	/* the milter thread */
+        create_thread(&ctx->process_parts.milter_server, 0, &milter_server, NULL);
+	/* watcher thread */
+	create_thread(NULL, DETACH, &milter_watcher, NULL);
 }

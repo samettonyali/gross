@@ -31,6 +31,7 @@
 /* these are implemented in worker_*.c */
 void postfix_server_init();
 void sjsms_server_init();
+void milter_server_init();
 
 /* internals */
 void update_counters(int status);
@@ -641,6 +642,6 @@ worker_init()
 		sjsms_server_init();
 #ifdef MILTER
 	if (ctx->config.protocols & PROTO_MILTER)
-		milter_init();
+		milter_server_init();
 #endif
 }
