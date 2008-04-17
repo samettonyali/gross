@@ -33,7 +33,7 @@ typedef struct {
         int weight;
         judgment_t judgment;
         char *reason;
-        char *checkname;
+        const char *checkname;
 } chkresult_t;
 
 typedef struct check_match_s {

@@ -497,7 +497,8 @@ record_match(querylog_entry_t *q, chkresult_t *r)
 	m = Malloc(sizeof(check_match_t));
 	memset(m, 0, sizeof(check_match_t));
         if (r->checkname)
-                m->name = strdup(r->checkname);
+   /*             m->name = strdup(r->checkname); */
+		m->name = r->checkname; 
         else
                 m->name = strdup("<anonymous>");
         m->weight = r->weight;
@@ -544,6 +545,7 @@ finalize(final_status_t *status)
 
 	if (status->reason)
 		Free(status->reason)
+	Free(status);
 }
 
 void

@@ -123,11 +123,10 @@ addrinfo_callback(void *arg, int status, struct hostent * host)
 			result->judgment = J_SUSPICIOUS;
 			result->weight = cba->dnsbl->weight;
 			result->wait = true;
-			result->checkname = strdup(cba->dnsbl->name);
+			result->checkname = cba->dnsbl->name;
 			send_result(cba->edict, result);
 		} else {
-			snprintf(cba->dnslname, MAXLINELEN, "%s", cba->dnsbl->name);
-			cba->dnslname[MAXLINELEN-1] = '\0';
+			*cba->dnslname = cba->dnsbl->name;
 			*cba->done = true;
 		}
 		stat_dnsbl_match(cba->dnsbl->name);
@@ -221,7 +220,7 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 	const char *orig_qstr;
 	dnsbl_t *dnsbl;
 	callback_arg_t *callback_arg;
-	char *dnslname;
+	const char *dnslname; 
 	int timeused;
 
 	chkresult_t *result;
@@ -308,7 +307,7 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 			callback_arg = Malloc(sizeof(callback_arg_t));
 			callback_arg->dnsbl = dnsbl;
 			callback_arg->done = &done;
-			callback_arg->dnslname = dnslname;
+			callback_arg->dnslname = &dnslname;
 			callback_arg->timeout = &timeout;
 			callback_arg->querystr = orig_qstr;
 			callback_arg->edict = edict;
@@ -367,7 +366,7 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 FINISH:
 	if (done && check_info->type == TYPE_DNSWL) {
 		result->judgment = J_PASS;
-		result->checkname = strdup(dnslname);
+		result->checkname = dnslname;
 	} else {
 		result->judgment = J_UNDEFINED;
 	}
