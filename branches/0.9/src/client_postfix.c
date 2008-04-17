@@ -38,7 +38,7 @@ client_postfix(int argc, char **argv)
 #endif
 
 	if (argc != 9 && argc != 7 && argc != 6) {
-                fprintf(stderr, "usage: gclient postfix sender recipient ip_address [runs] [host port]\n");
+                fprintf(stderr, "usage: gclient postfix sender recipient ip_address helo [runs] [host port]\n");
                 return 1;
         }
 
