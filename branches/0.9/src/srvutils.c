@@ -455,10 +455,10 @@ Malloc(size_t size)
 }
 
 /*
- * Pthread_create	- Wrapper, bails out if not successful.
+ * create_thread	- Wrapper, bails out if not successful.
  */
 void *
-Pthread_create(thread_info_t *tinfo, void *(*routine)(void *), void *arg)
+create_thread(thread_info_t *tinfo, int detach, void *(*routine)(void *), void *arg)
 {
 	pthread_t *tid;
         pthread_attr_t tattr;
@@ -469,7 +469,8 @@ Pthread_create(thread_info_t *tinfo, void *(*routine)(void *), void *arg)
 	ret = pthread_attr_init(&tattr);
 	if (ret)
 		daemon_fatal("pthread_attr_init");
-	ret = pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
+	if (DETACH == detach) 
+		ret = pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
 	if (ret)
 		daemon_fatal("pthread_attr_setdetachstate");
 

@@ -253,6 +253,6 @@ void
 postfix_server_init()
 {
 	logstr(GLOG_INFO, "starting postfix policy server");
-	Pthread_create(&ctx->process_parts.postfix_server, &postfix_server, NULL);
+	create_thread(&ctx->process_parts.postfix_server, DETACH, &postfix_server, NULL);
 }
 

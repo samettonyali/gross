@@ -367,5 +367,5 @@ void
 sjsms_server_init()
 {
 	logstr(GLOG_INFO, "starting sjsms policy server");
-	Pthread_create(&ctx->process_parts.sjsms_server, &sjsms_server, NULL);
+	create_thread(&ctx->process_parts.sjsms_server, DETACH, &sjsms_server, NULL);
 }
