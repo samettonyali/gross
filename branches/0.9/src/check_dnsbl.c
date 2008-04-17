@@ -31,10 +31,11 @@
 int
 cleanup_dnsblc(void *state)
 {
-	ares_channel channel;
+	ares_channel *channel;
 
-	channel = (ares_channel) state;
-	ares_destroy(channel);
+	channel = (ares_channel *)state;
+	ares_destroy(*channel);
+	Free(channel);
 	return 0;
 }
 
@@ -205,7 +206,7 @@ reverse_inet_addr(char *ipstr)
 int
 dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 {
-	ares_channel channel;
+	ares_channel *channel;
 	int nfds, count, ret;
 	bool done = false;
 	int timeout = 0;
@@ -236,15 +237,15 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 
 	/* initialize if we are not yet initialized */
 	if (NULL == thread_ctx->state) {
-		channel = Malloc(sizeof(channel));
-		if (ares_init(&channel) != ARES_SUCCESS) {
+		channel = Malloc(sizeof(*channel));
+		if (ares_init(channel) != ARES_SUCCESS) {
 			gerror("ares_init");
 			goto FINISH;
 		}
 		thread_ctx->state = channel;
 		thread_ctx->cleanup = &cleanup_dnsblc;
 	} else {
-		channel = (ares_channel) thread_ctx->state;
+		channel = (ares_channel *)thread_ctx->state;
 	}
 
 	request = (grey_tuple_t *) edict->job;
@@ -312,7 +313,7 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 			callback_arg->querystr = orig_qstr;
 			callback_arg->edict = edict;
 			callback_arg->check_info = check_info;
-			ares_gethostbyname(channel, query, PF_INET, &addrinfo_callback, callback_arg);
+			ares_gethostbyname(*channel, query, PF_INET, &addrinfo_callback, callback_arg);
 		} else {
 			logstr(GLOG_DEBUG, "skipping dnsbl %s due to timeouts.", dnsbl->name);
 		}
@@ -333,10 +334,10 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 
 			FD_ZERO(&readers);
 			FD_ZERO(&writers);
-			nfds = ares_fds(channel, &readers, &writers);
+			nfds = ares_fds(*channel, &readers, &writers);
 			if (nfds == 0)
 				break;
-			ares_timeout(channel, NULL, &tv);
+			ares_timeout(*channel, NULL, &tv);
 			tvtots(&tv, &ts);
 
 			if (ms_diff(&timeleft, &ts) < 0)
@@ -345,7 +346,7 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 			tstotv(&ts, &tv);
 
 			count = select(nfds, &readers, &writers, NULL, &tv);
-			ares_process(channel, &readers, &writers);
+			ares_process(*channel, &readers, &writers);
 		} while (! (done || edict->obsolete));
 
 		clock_gettime(CLOCK_TYPE, &now);
@@ -362,7 +363,7 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 
 	Free(qstr);
 
-	ares_cancel(channel);
+	ares_cancel(*channel);
 FINISH:
 	if (done && check_info->type == TYPE_DNSWL) {
 		result->judgment = J_PASS;

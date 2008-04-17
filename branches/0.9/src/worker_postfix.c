@@ -107,7 +107,6 @@ postfix_connection(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict
 			}
 
 			finalize(status);
-
 			request_unlink(request);
 			/* check if the client requested a single query mode */
 			if (client_info->single_query)
