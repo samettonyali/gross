@@ -546,7 +546,6 @@ void
 finalize(final_status_t *status)
 {
 	struct timespec now;
-	mseconds_t delay;
 	check_match_t *m, *n;
 	querylog_entry_t *q;
 

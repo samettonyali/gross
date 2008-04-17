@@ -90,5 +90,8 @@ int check_request(grey_tuple_t *tuple);
 void record_match(querylog_entry_t *q, chkresult_t *r);
 final_status_t *init_status(const char *proto);
 void querylogwrite(querylog_entry_t *q);
+void finalize(final_status_t *status);
+void querylogwrite(querylog_entry_t *q);
+void update_delay_stats(querylog_entry_t *q);
 
 #endif /* #ifndef WORKER_H */

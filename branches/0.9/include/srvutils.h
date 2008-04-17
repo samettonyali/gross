@@ -103,5 +103,8 @@ void *Malloc(size_t size);
 void *Pthread_create(thread_info_t *tinfo, void *(*routine)(void *), void *arg);
 void register_check(thread_pool_t *pool, bool definitive);
 char *ipstr(struct sockaddr_in *saddr);
+void create_statefile(void);
+void check_pidfile(void);
+void create_pidfile(void);
 
 #endif

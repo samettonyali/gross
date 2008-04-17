@@ -178,9 +178,8 @@ walk_mmap_info(void)
 /*
  * create_statefile     - return only when creation succeeds */
 void
-create_statefile()
+create_statefile(void)
 {
-        int fd;
         int ret;
 	int lumpsize;
 	int i;
@@ -225,7 +224,6 @@ build_bloom_ring(unsigned int num, bitindex_t num_bits)
         struct stat statbuf;
         char *magic = "mmbrq2\n";
         int use_mmap = FALSE;
-	FILE *statefile;
 
         assert(num_bits > 3);
 
@@ -478,7 +476,7 @@ Pthread_create(thread_info_t *tinfo, void *(*routine)(void *), void *arg)
 	ret = pthread_create(tid, &tattr, routine, arg);
 	if (ret)
 		daemon_fatal("pthread_create");
-
+	
 	if (tinfo)
 		tinfo->thread = tid;
 	else
