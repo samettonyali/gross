@@ -88,24 +88,6 @@ postfix_connection(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict
 			delay = ms_diff(&end, &start);
 			logstr(GLOG_DEBUG, "processing delay: %d ms", delay);
 			
-			switch (status->status) {
-			case STATUS_BLOCK:
-			  block_delay_update((double)delay);
-			  break;
-			case STATUS_MATCH:
-			  match_delay_update((double)delay);
-			  break;
-			case STATUS_GREY:
-			  greylist_delay_update((double)delay);
-			  break;
-			case STATUS_TRUST:
-			  trust_delay_update((double)delay);
-			  break;
-			default:
-			  /* FIX: count errors */
-			  ;
-			}
-
 			finalize(status);
 			request_unlink(request);
 			/* check if the client requested a single query mode */

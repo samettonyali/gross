@@ -521,6 +521,28 @@ record_match(querylog_entry_t *q, chkresult_t *r)
 }
 
 void
+update_delay_stats(querylog_entry_t *q)
+{
+	switch (q->action) {
+	case STATUS_BLOCK:
+		block_delay_update((double)q->delay);
+		break;
+	case STATUS_MATCH:
+		match_delay_update((double)q->delay);
+		break;
+	case STATUS_GREY:
+		greylist_delay_update((double)q->delay);
+		break;
+	case STATUS_TRUST:
+		trust_delay_update((double)q->delay);
+		break;
+	default:
+		/* FIX: count errors */
+		;
+	}
+}
+
+void
 finalize(final_status_t *status)
 {
 	struct timespec now;
@@ -532,6 +554,8 @@ finalize(final_status_t *status)
 	
 	clock_gettime(CLOCK_TYPE, &now);
 	q->delay = ms_diff(&now, &status->starttime);
+
+	update_delay_stats(q);
 
 	querylogwrite(q);
 
