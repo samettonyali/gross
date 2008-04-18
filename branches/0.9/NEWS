@@ -1,3 +1,7 @@
+Version 0.9-svn
+
+- changed filter_size default to 24, as stated in the docs.
+
 Version 0.9.3
 
 * HELOified all the rest of the code. There are still no checks
