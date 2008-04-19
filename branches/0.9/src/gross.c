@@ -590,6 +590,10 @@ main(int argc, char *argv[])
 		}
 	}
 
+	/* grossd doesn't need to be running as root */
+	if (geteuid() == 0)
+		daemon_shutdown(EXIT_FATAL, "Please, do not start grossd as root");
+
 	config = read_config(configfile);
 	configure_grossd(config);
 
