@@ -1,3 +1,5 @@
+dnl $Id$
+
 AC_INIT([gross],[0.9.3])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
