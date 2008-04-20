@@ -1,0 +1,77 @@
+.TH GROSSD 1 "Apr 2008"
+.SH NAME
+grossd \- Greylisting of Suspicious Sources \- the Server
+.SH SYNOPSIS
+.B grossd [-dCDhnrV] [-f
+.I config
+.B ] [-p
+.I pidfile
+.B ] [-P
+.I pidfile
+.B ]
+.SH DESCRIPTION
+.B grossd
+is a greylisting server, and more.
+.SH OPTIONS
+.IP -C
+Create the statefile and exit.
+.IP -D
+Make debugging output more verbose. Can be set twice for
+maximum verbosity.
+.IP -d
+Run grossd on foreground without daemonizing the process.
+grossd will output to terminal instead of using syslog.
+.IP "-f \fIconfig\fR"
+Use configuration options specified in the file \fIconfig\fR.
+Specify an alternative configuration file.
+.IP -h
+Output short usage information and exit.
+.IP -n
+Enable dry-run.
+.IP "-P \fIpidfile\fR"
+Bail out if the pidfile already exists. Create pidfile after the check.
+.IP "-p \fIpidfile\fR""
+Create the \fIpidfile\fR. Overwrite if it already exists.
+.IP -r
+Disable replication.
+.IP -V
+Output version information and exit.
+.SH CONFIGURATION
+.PP
+An example configuration file is installed by default. You have to
+set some configuration options in order to get grossd running in 
+your environment.
+.SS Network configuration options
+.IP \fIhost\fR
+is the address the server should listen for queries. Default is \fIlocalhost\fR.
+.IP \fIport\fR
+is the port the server should listen for queries.
+.IP \fIsync_listen\fR
+is the address to listen for communication with the peer. It
+defaults to \fIhost\fR setting.
+.IP \fIsync_peer\fR
+is the address of the peer used when runnin in clustered mode.
+.IP \fIsync_port\fR
+is the tcp port number to listen to and connect to in communication
+with the peer. Default is 5524.
+.IP \fIstatus_host\fR
+is the address grossd listens for status queries. Default is localhost.
+.IP \fIstatus_port\fR
+is the port number grossd listens for status queries. Default is 5522.
+.IP \fIprotocol\fR
+activates the server protocols grossd will support. Valid settings
+are \fIsjsms\fR, \fIpostfix\fR and \fImilter\fR.
+.SS Core server options
+.PP
+Most probably you can leave these to default settings. If your daily
+mail flow exceeds millions a day you may want to tweak \fIquery_timelimit\fR
+and/or \fIpool_maxthreads\fR. If you run grossd in a server with limited
+memory you may want to adjust \fIfilter_bits\fR. 
+.SH FILES
+.I grossd.conf
+.SH "SEE ALSO"
+.PP
+\fIhttp://code\&.google\&.com/p/gross/\fR
+.SH AUTHORS
+Eino Tuominen <eino@utu.fi>
+Antti Siira <antti@utu.fi>

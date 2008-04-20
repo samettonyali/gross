@@ -483,10 +483,11 @@ mrproper(int signo)
 void
 usage(void)
 {
-	printf("Usage: grossd [-dCDnrV] [-f configfile]\n");
-	printf("       -d	Run grossd as a foreground process.\n");
-	printf("       -C	create statefile\n");
+	printf("Usage: grossd [-CDdhnPprV] [-f configfile]\n");
+	printf("       -C	create statefile and exit\n");
 	printf("       -D	Enable debug logging (insane verbosity with -DD)\n");
+	printf("       -d	Run grossd as a foreground process\n");
+	printf("       -h	Print command usage and exit\n");
 	printf("       -f	override default configfile\n");
 	printf("       -n	dry run: always send TRUST\n");
 	printf("       -p file  write the process id in a pidfile\n");
@@ -585,7 +586,10 @@ main(int argc, char *argv[])
 			ctx->config.flags |= FLG_CHECK_PIDFILE;
 			ctx->config.flags |= FLG_CREATE_PIDFILE;
 			break;
-		case '?':
+		case 'h':
+			usage();
+			break;
+		default:
 			fprintf(stderr, "Unrecognized option: -%c\n", optopt);
 			usage();
 			break;
