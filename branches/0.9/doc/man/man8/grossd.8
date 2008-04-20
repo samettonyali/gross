@@ -30,7 +30,7 @@ Output short usage information and exit.
 Enable dry-run.
 .IP "-P \fIpidfile\fR"
 Bail out if the pidfile already exists. Create pidfile after the check.
-.IP "-p \fIpidfile\fR""
+.IP "-p \fIpidfile\fR"
 Create the \fIpidfile\fR. Overwrite if it already exists.
 .IP -r
 Disable replication.
@@ -41,6 +41,13 @@ Output version information and exit.
 An example configuration file is installed by default. You have to
 set some configuration options in order to get grossd running in 
 your environment.
+.PP
+Configuration file syntax is 
+.IP "\fBname = value [; param]...\fR"
+.PP
+Not all options accept parameters - 
+refer to individual descriptions. The comment separator is '#', everything
+after it is ignored by the config file parser.
 .SS Network configuration options
 .IP \fIhost\fR
 is the address the server should listen for queries. Default is \fIlocalhost\fR.
@@ -61,17 +68,115 @@ is the port number grossd listens for status queries. Default is 5522.
 .IP \fIprotocol\fR
 activates the server protocols grossd will support. Valid settings
 are \fIsjsms\fR, \fIpostfix\fR and \fImilter\fR.
+.IP \fImilter_listen\fR
+is the socket address for the Milter service. The format is
+proto:port@host.  Refer to Milter documentation about the specifics.
 .SS Core server options
 .PP
 Most probably you can leave these to default settings. If your daily
 mail flow exceeds millions a day you may want to tweak \fIquery_timelimit\fR
 and/or \fIpool_maxthreads\fR. If you run grossd in a server with limited
 memory you may want to adjust \fIfilter_bits\fR. 
+.IP \fIfilter_bits\fR
+is the size of the bloom filter. Size will be 2^\fIfilter_bits\fR. Lowering
+this value will increase the probability of false matches in each individual
+filter. Default is 24 bits.
+.IP \fInumber_buffers\fR
+is the number of filter used in the ring queue. Raising this value will cause
+an entry to stay in the server's memory longer. Default is 8 buffers.
+.IP \fIrotate_interval\fR
+is the number of seconds between filter rotations. Let \fBN\fR := \fInumber_buffers\fR
+and \fBI\fR := \fIrotate_interval\fR. An entry will stay in the server's memory for
+(\fBN\fR - 0.5 ) * \fBI\fR seconds on average. Defaults to 3600 seconds (one hour).
+.IP \fIupdate\fR
+is the way server updates the database. Valid options are \fIgrey\fR and \fIalways\fR.
+If set to \fIgrey\fR grossd will update the database only if response is
+\fISTATUS_GREY\fR. It defaults to \fIgrey\fR. Setting it to \fIalways\fR may reduce
+the impact on dns servers.
+.IP \fIgrey_mask\fR
+is the mask for grossd to use when matching client ip
+against the database. Default is 24, so grossd treats addresses
+like a.b.c.d as a.b.c.0. Setting \fIgrey_mask\fR to 32 makes grossd to 
+require that consecutive attempts are made from the same ip address.
+.SS Query constraints
+.IP \fIgrey_delay\fR
+is the time in seconds new triplets are kept on the greylist. Default is 180.
+.IP \fIquery_timelimit\fR
+is the query timeout in milliseconds. You may have to adjust this If you
+exceed millions of queries a day.
+.IP \fIpool_maxthreads\fR
+is the maximum threadcount per pool. You may have to raise the limit from
+the default if you get more than 100 queries per second and/or have slow
+dns servers. Rule of thumb would be decide how many queries you want
+grossd to be able to handle per second, and multiply that with
+\fIquery_timelimit\fR (in seconds, of course). It defaults to 100.
+.SS Configuring server responses
+.IP \fIblock_threshold\fR
+is the threshold after which grossd sends 
+a permanent error to the client. Every check that considers client_ip
+as suspicious returns a value (check weight). When sum of these
+values gets equivalent or greater than \fIblock_threshold\fR, grossd
+sends a \fISTATUS_BLOCK\fR response. Default is 0, which disables
+this functionality.
+.IP \fIblock_reason\fR
+is the reason given when client is too suspicious, see \fIblock_threshold\fR.
+Default is "Bad reputation".
+.IP \fIgrey_threshold\fR
+is analogous to \fIblock_threshold\fR, except at the threshold grossd sends
+a \fISTATUS_GREY\fR response.
+.SS Logging options
+.IP \fIlog_method\fR
+is used to choose the logging method. Currently the only implemented method is
+\fIsyslog\fR, which is the default.
+.IP \fIlog_level\fR
+sets the logging verbosity. Possible \fIlog_level\R settings in the order of
+increasing verbosity are \fIerror\fR, \fIwarning\fR, \fInotice\fR, \fIinfo\fR
+and \fIdebug\fR. \fIlog_level\fR defaults to \fIinfo\fR.
+.IP \fIsyslog_facility\fR
+is the facility syslog sends log messages with. It defaults to \fImail\fR.
+.SS Configuring checks
+.IP \fIcheck\fR
+is a multivalued option, that is, you can configure multiple checks by
+setting \fIcheck\fR option multiple times. Currently implemented checks
+are \fIdnsbl\fR, \fIdnswl\fR, \fIrhsbl\fR and \fIblocker\fR. Refer to 
+sections describing the checks below. If you don't configure any checks
+grossd will act as a traditional greylisting server.
+.IP \fIdnsbl\fR
+is a dns domain name of the dnsbl that \fIdnsbl\fR check will query.
+There are no defaults, but the default config lists a few as an example.
+you may assign different weights for the dnsbl's, default weight is 1.
+Refer to \fIgrey_threshold\fR and \fIblock_threshold\fR about the weights.
+This is a multivalued option.
+.IP \fIdnswl\fR
+is analogous to \fIdnsbl\fR. Remember that \fIdnswl\fR is a \fIdefinitive\fR
+check, that is grossd waits for the check to complete before deciding
+how to respond. This may cause unwanted latency, although you can adjust
+the maximum latency by \fIquery_timelimit\fR option. Highly recommended if
+you use grossd as a traditional greylister.
+This is a multivalued option.
+.IP \fIrhsbl\fR
+is analogous to \fIdnsbl\fR, but check is made against right hand side
+(right hand side block list) of the sender address, that is the domain
+part of the address. This is a multivalued option.
+.IP \fIblocker_host\fR
+is the host name of the Sophos blocker server. This is used only if
+\fIcheck = blocker\fI is set.
+.IP \fIblocker_port\fR
+is the tcp port of the Sophos blocker service. Default is 4466.
+.IP \fIblocker_weight\fR
+is the weight of the blocker check. See description of \fIgrey_threshold\fR
+and \fIblock_threshold\fR regarding the weights.
+.SH SECURITY CONSIDERATIONS
+Run grossd under some unprivileged user id. If started as root grossd
+will setuid() itself to nobody's user ID. There are no known security
+flaws but you must not expose grossd to the Internet. It could be
+used for a DoS against a domains DNS servers by an attacker as there
+is no authentication in grossd.
 .SH FILES
 .I grossd.conf
 .SH "SEE ALSO"
 .PP
 \fIhttp://code\&.google\&.com/p/gross/\fR
 .SH AUTHORS
-Eino Tuominen <eino@utu.fi>
+Eino Tuominen <eino@utu.fi> and
 Antti Siira <antti@utu.fi>
