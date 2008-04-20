@@ -98,6 +98,15 @@ is the mask for grossd to use when matching client ip
 against the database. Default is 24, so grossd treats addresses
 like a.b.c.d as a.b.c.0. Setting \fIgrey_mask\fR to 32 makes grossd to 
 require that consecutive attempts are made from the same ip address.
+.IP \fIstatefile\fR
+is the full path of the file that the server uses to store
+the state information. Default is not to have statefile. You may
+want to configure a \fIstatefile\fR especially if you do not
+configure replication.
+.IP \fIpidfile\fR
+is the full path of the file grossd writes its pid into.
+You can set parameter \fIcheck\fR, if you want to keep grossd
+from starting if pidfile already exists.
 .SS Query constraints
 .IP \fIgrey_delay\fR
 is the time in seconds new triplets are kept on the greylist. Default is 180.
@@ -129,11 +138,20 @@ a \fISTATUS_GREY\fR response.
 is used to choose the logging method. Currently the only implemented method is
 \fIsyslog\fR, which is the default.
 .IP \fIlog_level\fR
-sets the logging verbosity. Possible \fIlog_level\R settings in the order of
+sets the logging verbosity. Possible \fIlog_level\fR settings in the order of
 increasing verbosity are \fIerror\fR, \fIwarning\fR, \fInotice\fR, \fIinfo\fR
 and \fIdebug\fR. \fIlog_level\fR defaults to \fIinfo\fR.
 .IP \fIsyslog_facility\fR
 is the facility syslog sends log messages with. It defaults to \fImail\fR.
+.IP \fIstat_type\fR
+is the name of the requested statistic. It is of multivalued type. The
+valid options are \fIfull\fR (log all possible statistics), \fInone\fR
+(no statistics logging), \fIstatus\fR (basic set of statistics),
+\fIsince_startup\fR (basic set since the startup) and \fIdelay\fR
+(log processing delay statistics).  Default is \fInone\fR. Setting
+both \fInone\fR and \fIfull\fR is undefined.
+.IP \fIstat_interval\fR
+is the number of seconds between status log entries. Default is 3600.
 .SS Configuring checks
 .IP \fIcheck\fR
 is a multivalued option, that is, you can configure multiple checks by
@@ -160,12 +178,28 @@ is analogous to \fIdnsbl\fR, but check is made against right hand side
 part of the address. This is a multivalued option.
 .IP \fIblocker_host\fR
 is the host name of the Sophos blocker server. This is used only if
-\fIcheck = blocker\fI is set.
+\fIcheck = blocker\fR is set.
 .IP \fIblocker_port\fR
 is the tcp port of the Sophos blocker service. Default is 4466.
 .IP \fIblocker_weight\fR
 is the weight of the blocker check. See description of \fIgrey_threshold\fR
 and \fIblock_threshold\fR regarding the weights.
+.SS Sun Java System Messaging Server specific options
+You may configure the responses grossd sends over to grosscheck
+library. 
+.IP \fIsjsms_response_grey\fR
+is the mapping result template grossd uses for a STATUS_GREY result.
+Default is "$X4.4.3|$NPlease$ try$ again$ later."
+.IP \fIsjsms_response_match\fR
+is the mapping result template grossd uses for a STATUS_MATCH result.
+Default is "$Y".
+.IP \fIsjsms_response_trust\fR
+is the mapping result template grossd uses for a STATUS_TRUST result.
+Default is "$Y".
+.IP \fIsjsms_response_block\fR
+is the mapping result template grossd uses for a STATUS_BLOCK result.
+Default is "$N%reason%", where %reason% is tempate for the reason 
+string.
 .SH SECURITY CONSIDERATIONS
 Run grossd under some unprivileged user id. If started as root grossd
 will setuid() itself to nobody's user ID. There are no known security
