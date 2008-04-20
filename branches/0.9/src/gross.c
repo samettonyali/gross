@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pwd.h>
 
 #include "common.h"
 #include "conf.h"
@@ -448,7 +449,7 @@ configure_grossd(configlist_t *config)
 		ctx->config.block_reason = strdup(CONF("block_reason"));
 
 	/* Shortcut match ony if not blocking */
-	if (ctx->config.block_threshold == 0) 
+	if (ctx->config.block_threshold == 0)
 		ctx->config.flags |= FLG_MATCH_SHORTCUT;
 
 #ifdef MILTER
@@ -532,6 +533,7 @@ main(int argc, char *argv[])
 	struct timespec *delay;
 	pool_limits_t limits;
 	sigset_t mask, oldmask;
+	struct passwd *pwd;
 
 #ifdef DNSBL
 	dns_check_info_t *dns_check_info;
@@ -591,8 +593,18 @@ main(int argc, char *argv[])
 	}
 
 	/* grossd doesn't need to be running as root */
-	if (geteuid() == 0)
-		daemon_shutdown(EXIT_FATAL, "Please, do not start grossd as root");
+	if (geteuid() == 0) {
+		logstr(GLOG_INFO, "Running as root: setuid() to 'nobody'");
+		pwd = getpwnam("nobody");
+		if (NULL == pwd)
+			daemon_shutdown(EXIT_FATAL, "Running as root: can't find user 'nobody'");
+		if (setgid(pwd->pw_gid) != 0)
+			daemon_shutdown(EXIT_FATAL, "Running as root: can't setgid(%d) to 'nobody': %s",
+			    pwd->pw_gid, strerror(errno));
+		if (setuid(pwd->pw_uid) != 0)
+			daemon_shutdown(EXIT_FATAL, "Running as root: can't setuid(%d) to 'nobody': %s",
+			    pwd->pw_uid, strerror(errno));
+	}
 
 	config = read_config(configfile);
 	configure_grossd(config);
