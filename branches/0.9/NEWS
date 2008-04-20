@@ -2,7 +2,8 @@ Version 0.9-svn
 
 * Prevent grossd from running as root (euid == 0). You may 
   have to modify configuration and state file ownerships
-  and/or permissions.
+  and/or permissions. Grossd tries to setuid() and setgid()
+  to nobody if started by root.
 * New match shortcut logic. Now grossd will shortcut after
   a filter match only if no checks are configured (traditional
   greylister) or block_threshold == 0. 
