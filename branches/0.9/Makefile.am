@@ -4,6 +4,8 @@ noinst_HEADERS = include/bloom.h include/conf.h include/syncmgr.h include/check_
 
 EXTRA_DIST = configure doc
 SUBDIRS = src man
+# This is important, as it creates the etc directory if needed
+sysconf_DATA =
 
 dist-hook:
 	rm -rf `find $(distdir)/doc -type d -name .svn`
