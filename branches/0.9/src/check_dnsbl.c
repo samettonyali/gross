@@ -299,7 +299,12 @@ dnsblc(thread_pool_t *info, thread_ctx_t *thread_ctx, edict_t *edict)
 	/* initiate dnsbl queries */
 	while (dnsbl) {
 		assert(dnsbl->name);
-		snprintf(buffer, MAXQUERYSTRLEN, "%s.%s", qstr, dnsbl->name);
+		/*
+		 * make sure the domain name is fully qualified in order
+		 * to avoid unnecessary dns lookups
+		 */
+		snprintf(buffer, MAXQUERYSTRLEN, "%s.%s%s", qstr, dnsbl->name,
+			*(dnsbl->name + strlen(dnsbl->name) - 1) != '.' ? "." : "");
 		query = strdup(buffer);
 		if (query_clearance(dnsbl) == TRUE) {
 			logstr(GLOG_INSANE, "initiating dns query: %s", query);
