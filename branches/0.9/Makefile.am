@@ -5,7 +5,7 @@ EXTRA_DIST = configure doc
 SUBDIRS = src
 sysconf_DATA =
 man8_MANS = doc/man/grossd.8
-man5_MANS = doc/man/grossd_conf.5
+man5_MANS = doc/man/grossd.conf.5
 dist-hook:
 	rm -rf `find $(distdir)/doc -type d -name .svn`
 
