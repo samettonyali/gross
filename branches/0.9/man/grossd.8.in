@@ -44,7 +44,7 @@ message.
 .Pp
 If the triplet has not been seen before, grossd then
 runs configured checks against the client information.
-address. Based on check results grossd returns the client 
+Based on check results grossd returns the client 
 a result. Possible results are 
 .Dv STATUS_TRUST ,
 .Dv STATUS_BLOCK
@@ -71,7 +71,8 @@ versus the number of handled connections.
 .Bl -tag -widht Ds
 .It Fl C
 Create the statefile and exit. The 
-.Cm statefile configuration option
+.Cm statefile
+configuration option
 must be specified in the configuration file.
 .It Fl D
 Make debugging output more verbose. It can be set twice
@@ -83,7 +84,7 @@ on foreground without daemonizing the process.
 grossd will output to terminal instead of using syslog.
 .It Fl f Ar config
 Specifies the name of the configuration file. The default is
-.Pa $PREFIX/etc/grossd.conf
+.Pa @sysconfdir@/etc/grossd.conf
 .It Fl h
 Output short usage information and exit.
 .It Fl n
@@ -99,6 +100,18 @@ Output version information and exit.
 .El
 .Sh FILES
 .Pa @sysconfdir@/grossd.conf
+.Sh "SECURITY CONSIDERATIONS"
+Run
+.Nm
+under some unprivileged user id. If started as root grossd
+will
+.Fn setuid
+itself to nobody's user id. There are no known security
+flaws but you
+.Em must not expose
+.Nm
+to the Internet. It could be used for a DoS against a domains
+DNS servers by an attacker as there is no authentication in grossd.
 .Sh DIAGNOSTICS
 .Xr grossd 8 
 daemon exits 0 if success, and >0 if an error occurs.

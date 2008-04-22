@@ -5,11 +5,11 @@
 .Nm grossd.conf
 .Nd Greylisting of Suspicious Sources daemon configuration file
 .Sh SYNOPSIS
-.Pa $PREFIX/etc/grossd.conf
+.Pa @sysconfdir@/etc/grossd.conf
 .Sh DESCRIPTION
 .Xr grossd 8
 reads configuration data from
-.Pa $PREFIX/etc/grossd.conf
+.Pa @sysconfdir@/etc/grossd.conf
 (or the file specified with
 .Fl f
 on the command line). 
@@ -43,22 +43,23 @@ is the tcp port number to listen to and connect to in communication
 with the peer. Default is
 .Ad 5524 .
 .It Cm status_host
-is the address grossd listens for status queries. Default is localhost.
+is the address grossd
+listens for status queries. Default is localhost.
 .It Cm status_port
-is the port number grossd listens for status queries. Default is
+is the port number grossd
+listens for status queries. Default is
 .Ad 5522 .
 .It Cm protocol
-activates the server protocols
-.Xr grossd 8
+activates the server protocols grossd
 will support. Valid settings are 
-.Sq sjsms
+.Sq sjsms ,
 .Sq postfix
 and
 .Sq milter .
 .It Cm milter_listen
 is the socket address for the Milter service. The format is
 .Ad proto:port@host .
-Refer to Milter documentation about the specifics.
+Refer to Milter documentation for the specifics.
 .El
 .Ss Core server options
 Most probably you can leave these to default settings. If your daily
@@ -70,7 +71,7 @@ If you run grossd in a server with limited memory you may want to adjust
 .Cm filter_bits . 
 .Bl -tag -width Ds
 .It Cm filter_bits
-is the size of the bloom filter. Size will be 2^
+is the size of the Bloom filter. Size will be 2^
 .Cm filter_bits .
 Lowering this value will increase the probability of false matches in each individual
 filter. Default is 24.
@@ -100,21 +101,23 @@ which is the default, grossd will update the database only if response is
 .Dv STATUS_GREY .
 Setting it to
 .Sq always
- may reduce the impact on dns servers.
+may reduce the impact on DNS servers.
 .It Cm grey_mask
-is the mask for grossd to use when matching client ip
-against the database. Default is 24, which makes
-.Xr grossd 8 
+is the mask for grossd to use when matching
+.Ad client_ip
+against the database. Default is 24, which makes grossd
 to treat addresses like
 .Ad a.b.c.d
 as
 .Ad a.b.c.0 .
 Setting
 .Cm grey_mask
-to 32 makes grossd to require that consecutive attempts are made from the same ip address.
+to 32 makes grossd to require that consecutive attempts are
+made from the same
+.Ad client_ip.
 .It Cm statefile
 is the full path of the file that the server uses to store
-the state information. Default is not to have statefile. You may
+the state information. Default is not to have a statefile. You may
 want to configure a 
 Cm statefile
 especially if you do not configure replication.
@@ -122,21 +125,20 @@ especially if you do not configure replication.
 is the full path of the file grossd writes its pid into.
 You can set parameter
 .Sq check ,
-if you want to keep grossd from starting if pidfile already exists.
+if you want to keep grossd from starting, should pidfile already exist.
 .El
 .Ss Query constraints
 .Bl -tag -width Ds
 .It Cm grey_delay
 is the time in seconds new triplets are kept on the greylist. Default is 180.
 .It Cm query_timelimit
-is the query timeout in milliseconds. You may have to adjust this If you
+is the query timeout in milliseconds. You may have to adjust this if you
 exceed millions of queries a day.
 .It Cm pool_maxthreads
 is the maximum threadcount per pool. You may have to raise the limit from
 the default if you get more than 100 queries per second and/or have slow
-dns servers. Rule of thumb would be to decide how many queries you want
-.Xr grossd 8
-to be able to handle per second, and multiply that with
+DNS servers. Rule of thumb would be to decide how many queries you want
+grossd to be able to handle per second, and multiply that with
 .Cm query_timelimit
 .Pq in seconds, of course .
 It defaults to 100.
@@ -150,11 +152,10 @@ a permanent error to the client. Every check that considers
 as suspicious returns a value
 .Pq check weight .
 When sum of these values gets equivalent or greater than
-.Cm block_threshold ,
-.Xr grossd 8
-sends a
+.Cm block_threshold 
+grossd sends a
 .Cm STATUS_BLOCK
-response. Default is 0, which disables this functionality.
+response. Default is 0 which disables this functionality.
 .It Cm block_reason
 is the reason given when client is too suspicious, see
 Cm block_threshold .
@@ -198,7 +199,7 @@ log all possible statistics,
 .It Sq none
 no statistics logging,
 .It Sq status
-basic set of statistics and
+basic set of statistics, 
 .It Sq since_startup
 basic set since the startup
 and
@@ -207,7 +208,7 @@ log processing delay statistics.
 .El
 .Pp
 Default is
-.Sqnone .
+.Sq none .
 Setting both
 .Sq none
 and
@@ -232,11 +233,13 @@ and
 Refer to sections describing the checks below. If you don't configure
 any checks grossd will act as a traditional greylisting server.
 .It Cm dnsbl
-is a dns domain name of the dnsbl that
+is a DNS domain name of the dnsbl that
 .Sq dnsbl
 .Cm check
-will query. There are no defaults, but the default config lists a
-few as an example. You may assign different weights for the dnsbl's,
+will query. There are no defaults, but the default configuration file
+lists a few as an example. If you have any locally administrated
+block lists take into account that grossd makes all queries as
+fully qualified. You may assign different weights for the dnsbl's,
 default weight is 1.
 Refer to
 .Cm grey_threshold
@@ -256,9 +259,8 @@ check, that is grossd waits for the check to complete before deciding
 how to respond. This may cause unwanted latency, although you can adjust
 the maximum latency by
 .Cm query_timelimit
-option. Highly recommended if
-you use grossd as a traditional greylister.
-This is a multivalued option.
+option. Highly recommended if you use grossd
+as a traditional greylister. This is a multivalued option.
 .It Cm rhsbl
 is analogous to
 .Cm dnsbl ,
@@ -271,7 +273,7 @@ is the host name of the Sophos blocker server. This is used only if
 .Cm check = blocker
 is set.
 .It Cm blocker_port
-is the tcp port of the Sophos blocker service. Default is 4466.
+is the TCP port of the Sophos blocker service. Default is 4466.
 .It Cm blocker_weight
 is the weight of the blocker check. See description of
 .Cm grey_threshold
@@ -310,12 +312,12 @@ is the template for the reason string.
 .Ss Sun Java System Messaging Server
 You have to add a mapping entry to set
 .Nm SJSMS
-to query
-.Xr grossd 8 .
-It's also a good idea to exclude
+to query grossd. It's also a good idea to exclude
 .Ad postmaster
 and
-.Ad abuse addresses before querying grossd. Here is an example:
+.Ad abuse
+addresses before querying grossd.
+Here is an example:
 .Bd -literal -offset 2n
 ORIG_MAIL_ACCESS
 
@@ -325,7 +327,7 @@ ORIG_MAIL_ACCESS
   TCP|*|*|*|*|*|*|tcp_local|*|*|postmaster@*  $Y$E
   TCP|*|*|*|*|*|*|tcp_local|*|*|abuse@*  $Y$E
 ! use gross to check all triplets (client_ip,sender,recipient)
-  TCP|*|*|*|*|SMTP/*|*|tcp_local|*|*|*  $[/usr/local/gross/lib/grosscheck.so,grosscheck,10.10.13.1,10.10.13.2,5525,$2,$=$8$_,$=$6$_,$=$4$_]
+  TCP|*|*|*|*|SMTP/*|*|tcp_local|*|*|*  $[@libdir@/grosscheck.so,grosscheck,10.10.13.1,10.10.13.2,5525,$2,$=$8$_,$=$6$_,$=$4$_]
 .Ed
 .Pp
 Mapping call parameters are as follows:
@@ -352,8 +354,8 @@ envelope recipient's email address,
 HELO/EHLO string. 
 .El
 .Ss Postfix
-Grossd implements native Postfix policy delegation protocol. Just add grossd 
-to the
+Grossd implements native Postfix policy delegation protocol. Just specify
+grossd at the
 .Cm smtpd_recipient_restrictions
 in the main configuration file
 .Pp
@@ -382,6 +384,7 @@ GROSS_QUERY = sender=$sender_address\\n\\
   client_address=$sender_host_address\\n\\
   grossd_mode=single\\n\\n
 .Ed
+.Pp
 Acl section:
 .Bd -literal -offset 2n
 # gross

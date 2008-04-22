@@ -10,6 +10,7 @@ SUFFIXES = .in
 	@SED@ \
 	  -e 's!@''sysconfdir''@!@sysconfdir@!' \
 	  -e 's!@''sbindir''@!@sbindir@!' \
+	  -e 's!@''libdir''@!@libdir@!' \
 	  -e 's!@''VERSION''@!@VERSION@!' \
 	$< > $@
 
