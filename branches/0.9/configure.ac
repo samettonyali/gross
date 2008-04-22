@@ -1,6 +1,6 @@
 dnl $Id$
 
-AC_INIT([gross],[1.0rc])
+AC_INIT([gross],[1.0rc2])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -19,6 +19,7 @@ AC_DEFUN([GROSS_CLEAR_LT_TAGCONFIG],
 )
 GROSS_CLEAR_LT_TAGCONFIG
 AC_PROG_LIBTOOL
+AC_PROG_SED
 
 CPPFLAGS="$CPPFLAGS -I/usr/local/include"
 LDFLAGS="$LDFLAGS -L/usr/local/lib"
@@ -133,5 +134,5 @@ fi
 AC_DEFINE_UNQUOTED([CONFIGFILE], "`eval echo $sysconfdir/grossd.conf`", [Default config file])
 AC_DEFINE_UNQUOTED([CONFIGURE_LINE], "${CONFIGURE_LINE}", [./configure command and args])
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile doc/man/Makefile])
 AC_OUTPUT
