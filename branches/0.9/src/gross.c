@@ -170,10 +170,10 @@ configure_grossd(configlist_t *config)
 	ctx->config.peer.peer_addr.sin_port = htons(atoi(CONF("sync_port")));
 
 	if (CONF("sync_peer") == NULL) {
-		logstr(GLOG_INFO, "No peer configured. Replication suppressed.");
+		logstr(GLOG_DEBUG, "No peer configured. Replication suppressed.");
 		ctx->config.flags |= FLG_NOREPLICATE;
 	} else {
-		logstr(GLOG_INFO, "Peer %s configured. Replicating.", CONF("sync_peer"));
+		logstr(GLOG_DEBUG, "Peer %s configured. Replicating.", CONF("sync_peer"));
 		ctx->config.peer.peer_addr.sin_family = AF_INET;
 		host = gethostbyname(CONF("sync_peer"));
 		inet_pton(AF_INET, inet_ntoa(*(struct in_addr *)host->h_addr_list[0]),
@@ -184,10 +184,10 @@ configure_grossd(configlist_t *config)
 
 	updatestr = CONF("update");
 	if (strncmp(updatestr, "always", 7) == 0) {
-		logstr(GLOG_INFO, "updatestyle: ALWAYS");
+		logstr(GLOG_DEBUG, "updatestyle: ALWAYS");
 		ctx->config.flags |= FLG_UPDATE_ALWAYS;
 	} else if ((updatestr == NULL) || (strncmp(updatestr, "grey", 5) == 0))
-		logstr(GLOG_INFO, "updatestyle: GREY");
+		logstr(GLOG_DEBUG, "updatestyle: GREY");
 	else {
 		daemon_shutdown(EXIT_CONFIG, "Invalid updatestyle: %s", updatestr);
 	}
@@ -598,7 +598,7 @@ main(int argc, char *argv[])
 
 	/* grossd doesn't need to be running as root */
 	if (geteuid() == 0) {
-		logstr(GLOG_INFO, "Running as root: setuid() to 'nobody'");
+		logstr(GLOG_DEBUG, "Running as root: setuid() to 'nobody'");
 		pwd = getpwnam("nobody");
 		if (NULL == pwd)
 			daemon_shutdown(EXIT_FATAL, "Running as root: can't find user 'nobody'");

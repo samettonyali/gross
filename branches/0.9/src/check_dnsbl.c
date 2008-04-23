@@ -46,7 +46,7 @@ add_dnsbl(dnsbl_t **current, const char *name, int weight)
 {
 	dnsbl_t *new;
 
-	logstr(GLOG_INFO, "adding dnsbl: %s, weight %d", name, weight);
+	logstr(GLOG_DEBUG, "adding dnsbl: %s, weight %d", name, weight);
 
 	new = Malloc(sizeof(dnsbl_t));
 	memset(new, 0, sizeof(dnsbl_t));
