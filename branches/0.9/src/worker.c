@@ -674,7 +674,7 @@ querylogwrite(querylog_entry_t *q)
 		m = m->next;
 	}
 
-	logstr(GLOG_INFO, line);
+	logstr(GLOG_INFO, "%s", line);
 }
 
 void
