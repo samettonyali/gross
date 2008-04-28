@@ -1,4 +1,6 @@
+if HAVE_SED
 man_MANS = grossd.8 grossd.conf.5
+endif
 
 EXTRA_DIST = grossd.8.pod grossd.conf.5.pod grossd.8.in grossd.conf.5.in
 
@@ -12,13 +14,14 @@ grossd.conf.5.in: grossd.conf.5.pod
 	$(POD2MAN) -c "" -r -s 5 -n grossd.conf $< $@
 endif
 
+if HAVE_SED
 grossd.8: grossd.8.in
 	@SED@ \
           -e 's!@''sysconfdir''@!@sysconfdir@!' \
           -e 's!@''sbindir''@!@sbindir@!' \
           -e 's!@''libdir''@!@libdir@!' \
           -e 's!@''VERSION''@!@VERSION@!' \
-	$< > $@
+	$@.in > $@
 
 grossd.conf.5: grossd.conf.5.in
 	@SED@ \
@@ -26,4 +29,5 @@ grossd.conf.5: grossd.conf.5.in
           -e 's!@''sbindir''@!@sbindir@!' \
           -e 's!@''libdir''@!@libdir@!' \
           -e 's!@''VERSION''@!@VERSION@!' \
-	$< > $@
+	$@.in > $@
+endif
