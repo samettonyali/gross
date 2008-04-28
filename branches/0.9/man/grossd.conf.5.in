@@ -133,10 +133,10 @@
 \&\fBgrossd.conf\fR \- Greylisting of Suspicious Sources daemon configuration file
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-\&\fI\f(CI@sysconfdir\fI@/etc/grossd.conf\fR
+\&\fI%{sysconfdir}/etc/grossd.conf\fR
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-\&\fIgrossd\fR\|(8) reads configuration data from \fI\f(CI@sysconfdir\fI@/etc/grossd.conf\fR
+\&\fIgrossd\fR\|(8) reads configuration data from \fI%{sysconfdir}/etc/grossd.conf\fR
 (or the file specified with \fB\-f\fR on the command line). 
 An example configuration file is installed by default. You have to
 set some configuration options in order to get \fIgrossd\fR\|(8) running in 
@@ -398,7 +398,7 @@ Here is an example:
 \&    TCP|*|*|*|*|*|*|tcp_local|*|*|postmaster@*  $Y$E
 \&    TCP|*|*|*|*|*|*|tcp_local|*|*|abuse@*  $Y$E
 \&  ! use gross to check all triplets (client_ip,sender,recipient)
-\&    TCP|*|*|*|*|SMTP/*|*|tcp_local|*|*|*  $[@libdir@/grosscheck.so,grosscheck,10.10.13.1,10.10.13.2,5525,$2,$=$8$_,$=$6$_,$=$4$_]
+\&    TCP|*|*|*|*|SMTP/*|*|tcp_local|*|*|*  $[%{libdir}/grosscheck.so,grosscheck,10.10.13.1,10.10.13.2,5525,$2,$=$8$_,$=$6$_,$=$4$_]
 .Ve
 .PP
 Mapping call parameters are as follows:

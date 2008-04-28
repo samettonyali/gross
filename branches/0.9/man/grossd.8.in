@@ -190,7 +190,7 @@ Run \fBgrossd\fR on foreground without daemonizing the process.
 .IP "\fB\-f\fR \fIconfig\fR" 4
 .IX Item "-f config"
 Specifies the name of the configuration file. The default is
-\&\fI\f(CI@sysconfdir\fI@/etc/grossd.conf\fR
+\&\fI%{sysconfdir}/etc/grossd.conf\fR
 .IP "\fB\-h\fR" 4
 .IX Item "-h"
 Output short usage information and exit.
@@ -211,7 +211,7 @@ Disable replication.
 Output version information and exit.
 .SH "FILES"
 .IX Header "FILES"
-\&\fI\f(CI@sysconfdir\fI@/grossd.conf\fR
+\&\fI%{sysconfdir}/grossd.conf\fR
 .SH "SECURITY CONSIDERATIONS"
 .IX Header "SECURITY CONSIDERATIONS"
 Run \fBgrossd\fR under some unprivileged user id. If started as root

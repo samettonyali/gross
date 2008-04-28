@@ -17,17 +17,13 @@ endif
 if HAVE_SED
 grossd.8: grossd.8.in
 	@SED@ \
-          -e 's!@''sysconfdir''@!@sysconfdir@!' \
-          -e 's!@''sbindir''@!@sbindir@!' \
-          -e 's!@''libdir''@!@libdir@!' \
-          -e 's!@''VERSION''@!@VERSION@!' \
-	$@.in > $@
+          -e 's!%{sysconfdir}!@sysconfdir@!' \
+          -e 's!%{libdir}!@libdir@!' \
+	$(srcdir)/$@.in > $@
 
 grossd.conf.5: grossd.conf.5.in
 	@SED@ \
-          -e 's!@''sysconfdir''@!@sysconfdir@!' \
-          -e 's!@''sbindir''@!@sbindir@!' \
-          -e 's!@''libdir''@!@libdir@!' \
-          -e 's!@''VERSION''@!@VERSION@!' \
-	$@.in > $@
+          -e 's!%{sysconfdir}!@sysconfdir@!' \
+          -e 's!%{libdir}!@libdir@!' \
+	$(srcdir)/$@.in > $@
 endif

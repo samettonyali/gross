@@ -6,11 +6,11 @@ B<grossd.conf> - Greylisting of Suspicious Sources daemon configuration file
 
 =head1 SYNOPSIS
 
-F<@sysconfdir@/etc/grossd.conf>
+F<%{sysconfdir}/etc/grossd.conf>
 
 =head1 DESCRIPTION
 
-grossd(8) reads configuration data from F<@sysconfdir@/etc/grossd.conf>
+grossd(8) reads configuration data from F<%{sysconfdir}/etc/grossd.conf>
 (or the file specified with B<-f> on the command line). 
 An example configuration file is installed by default. You have to
 set some configuration options in order to get grossd(8) running in 
@@ -338,7 +338,7 @@ Here is an example:
     TCP|*|*|*|*|*|*|tcp_local|*|*|postmaster@*  $Y$E
     TCP|*|*|*|*|*|*|tcp_local|*|*|abuse@*  $Y$E
   ! use gross to check all triplets (client_ip,sender,recipient)
-    TCP|*|*|*|*|SMTP/*|*|tcp_local|*|*|*  $[@libdir@/grosscheck.so,grosscheck,10.10.13.1,10.10.13.2,5525,$2,$=$8$_,$=$6$_,$=$4$_]
+    TCP|*|*|*|*|SMTP/*|*|tcp_local|*|*|*  $[%{libdir}/grosscheck.so,grosscheck,10.10.13.1,10.10.13.2,5525,$2,$=$8$_,$=$6$_,$=$4$_]
 
 Mapping call parameters are as follows:
 
