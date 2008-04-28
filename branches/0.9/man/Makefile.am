@@ -6,10 +6,10 @@ CLEANFILES = $(man_MANS)
 
 if HAVE_POD2MAN
 grossd.8.in: grossd.8.pod
-        $(POD2MAN) -c "" -r -s 8 -n grossd $< $@
+	$(POD2MAN) -c "" -r -s 8 -n grossd $< $@
 
 grossd.conf.5.in: grossd.conf.5.pod
-        $(POD2MAN) -c "" -r -s 5 -n grossd.conf $< $@
+	$(POD2MAN) -c "" -r -s 5 -n grossd.conf $< $@
 endif
 
 grossd.8: grossd.8.in
