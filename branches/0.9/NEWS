@@ -12,6 +12,7 @@ Issues fixed:
 #48: Need man pages
 #59: grossd 0.9.3 leaks memory
 #60: Grossd should do all dns queries as fully qualified
+#61: Space Character in Mail From Crashing Gross
 
 - changed filter_bits default back to 24, as stated in the docs.
 
