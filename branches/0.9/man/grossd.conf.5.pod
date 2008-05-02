@@ -418,6 +418,13 @@ Acl section:
       {Rejected by Gross.}}
     condition = ${if match {$acl_c0}{action=reject}} 
 
+=head2 Sendmail
+
+Sendmail can query grossd via milter protocol. Insert this in
+sendmail.mc and configure B<milter_listen> accordingly:
+
+  INPUT_MAIL_FILTER(`Gross', `S=inet:5523@localhost, T=R:20s')
+
 =head1 SEE ALSO
 
 grossd(8)
