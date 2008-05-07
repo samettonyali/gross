@@ -21,6 +21,8 @@ gclient_DEPENDENCIES = proto_sjsms.c
 grosscheck_la_SOURCES = grosscheck.c proto_sjsms.c
 grosscheck_la_LDFLAGS = -module -avoid-version @STATIC_GLIBC_FLAG@
 
-check_PROGRAMS = sha256
+check_PROGRAMS = sha256 msgqueue
 bloom_SOURCES = sha256.c bloom-test.c bloom.c srvutils.c utils.c
 sha256_SOURCES = sha256-test.c sha256.c srvutils.c utils.c bloom.c
+msgqueue_SOURCES = msgqueue-test.c msgqueue.c srvutils.c bloom.c utils.c
+TESTS = msgqueue

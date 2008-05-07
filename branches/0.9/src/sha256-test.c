@@ -57,15 +57,16 @@ main(int argc, char **argv)
 	}
 
 	while (getline(data, message, MAX_MESSAGE_LEN) && getline(data, reference_digest, MAX_MESSAGE_LEN)) {
-		message[strlen(message) - 1] = 0;	// remove newline
-		reference_digest[strlen(reference_digest) - 1] = 0;	// remove newline
+		message[strlen(message) - 1] = 0;			/* remove newline */
+		reference_digest[strlen(reference_digest) - 1] = 0;	/* remove newline */
 
 		digest = sha256((sha_byte_t *)message, strlen(message));
 		snprintf(digest_hex, MAX_MESSAGE_LEN, "%08x %08x %08x %08x %08x %08x %08x %08x", digest.h0,
 		    digest.h1, digest.h2, digest.h3, digest.h4, digest.h5, digest.h6, digest.h7);
 
 		if (strncmp(digest_hex, reference_digest, MAX_MESSAGE_LEN) != 0) {
-			if (argc > 2) {	// Detailed error messages requested
+			if (argc > 2) {
+				/* Detailed error messages requested */
 				printf("\nERROR: For string %s digest '%s' and reference digest '%s' differ.",
 				    message, digest_hex, reference_digest);
 			}
