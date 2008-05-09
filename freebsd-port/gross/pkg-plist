@@ -1,0 +1,7 @@
+@stopdaemon grossd
+bin/gclient
+sbin/grossd
+lib/grosscheck.a
+lib/grosscheck.so
+lib/grosscheck.la
+

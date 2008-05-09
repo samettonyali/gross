@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: grosdd
+# REQUIRE: NONE
+#
+# Add the following lines to /etc/rc.conf to enable grossd:
+# grossd_enable (bool):		Set it to "YES" to enable grossd.
+#                               Default is "NO".
+# grossd_flags (str):		Flags passed to grossd on startup.
+#                               Default is "".
+
+. %%RC_SUBR%%
+
+name="grossd"
+rcvar=${name}_enable
+
+command=%%PREFIX%%/sbin/${name}
+
+load_rc_config $name
+
+: ${grossd_enable="NO"}
+
+run_rc_command "$1"
