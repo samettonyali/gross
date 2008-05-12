@@ -17,6 +17,8 @@ Issues fixed:
 #60: Grossd should do all dns queries as fully qualified
 #61: Space Character in Mail From Crashing Gross
 #62: Double free() with milter
+#63: Apostrophe chokes old gcc
+#64: Garbage in logs with milter api
 
 Version 0.9.3
 
