@@ -98,6 +98,15 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Clock type */
+#undef USE_CLOCK_HIGHRES
+
+/* Clock type */
+#undef USE_CLOCK_MONOTONIC
+
+/* Clock type */
+#undef USE_GETTIMEOFDAY
+
 /* Use sem_open() instead of sem_init() */
 #undef USE_SEM_OPEN
 

@@ -27,15 +27,15 @@ enum readlineret_t
 #define SI_MEGA (SI_KILO * SI_KILO)
 #define SI_GIGA (SI_KILO * SI_MEGA)
 
-#ifndef HAVE_CLOCK_GETTIME
-/* OS X does not have clock_gettime, so we will fake one */
+#ifdef USE_GETTIMEOFDAY
+/* e.g. OS X does not have clock_gettime, so we will fake one */
 typedef enum
 {
 	CLOCK_KLUDGE
 } clockid_t;
 
 int clock_gettime(clockid_t clk_id, struct timespec *tp);
-#endif /* ! HAVE_CLOCK_GETTIME */
+#endif /* ! USE_GETTIMEOFDAY */
 
 int readline(int fd, void *vptr, size_t maxlen);
 int getline(int fd, char *line, size_t maxlen);
