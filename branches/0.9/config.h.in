@@ -111,6 +111,9 @@
 #undef USE_CLOCK_MONOTONIC
 
 /* Clock type */
+#undef USE_CLOCK_REALTIME
+
+/* Clock type */
 #undef USE_GETTIMEOFDAY
 
 /* Use sem_open() instead of sem_init() */

@@ -1,6 +1,6 @@
 dnl $Id$
 
-AC_INIT([gross],[1.0.0])
+AC_INIT([gross],[svn-r443])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -80,7 +80,11 @@ then
 	    dnl no CLOCK_MONOTONIC
 	    [AC_CHECK_DECLS([CLOCK_HIGHRES],AC_DEFINE([USE_CLOCK_HIGHRES],,[Clock type]),
 		dnl no CLOCK_HIGHRES
-		[AC_CHECK_FUNCS([gettimeofday],AC_DEFINE([USE_GETTIMEOFDAY],,[Clock type]),AC_MSG_ERROR([No suitable clock found]))]
+		[AC_CHECK_DECLS([CLOCK_HIGHRES],AC_DEFINE([USE_CLOCK_REALTIME],,[Clock type]),
+		    dnl no CLOCK_REALTIME
+		    [AC_CHECK_FUNCS([gettimeofday],AC_DEFINE([USE_GETTIMEOFDAY],,[Clock type]),AC_MSG_ERROR([No suitable clock found]))]
+		dnl for CLOCK_REALTIME
+		[#include <time.h>])],
 	    dnl for CLOCK_HIGHRES
 	    [#include <time.h>])],
 	dnl for CLOCK_MONOTONIC

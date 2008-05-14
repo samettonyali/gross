@@ -72,6 +72,8 @@
 # define CLOCK_TYPE CLOCK_MONOTONIC
 #elif defined USE_CLOCK_HIGHRES
 # define CLOCK_TYPE CLOCK_HIGHRES
+#elif defined USE_CLOCK_REALTIME
+# define CLOCK_TYPE CLOCK_REALTIME
 #else
 # error "No suitable clock type found (should not happen)"
 #endif
