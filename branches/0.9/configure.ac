@@ -1,6 +1,6 @@
 dnl $Id$
 
-AC_INIT([gross],[svn-r443])
+AC_INIT([gross],[1.0.0])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
