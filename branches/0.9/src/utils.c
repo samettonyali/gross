@@ -273,6 +273,7 @@ clock_gettime(clockid_t clk_id, struct timespec *ts)
 	struct timeval tv;
 
 	if (clk_id == CLOCK_KLUDGE) {
+		printf("gettimeofday()\n");
 		if (gettimeofday(&tv, NULL) != 0)
 			return -1;
 		tvtots(&tv, ts);

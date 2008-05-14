@@ -9,6 +9,12 @@
 /* Define to 1 if you have the <ares.h> header file. */
 #undef HAVE_ARES_H
 
+/* Define to 1 if the system has the type `bool'. */
+#undef HAVE_BOOL
+
+/* Define to 1 if the system has the type `clockid_t'. */
+#undef HAVE_CLOCKID_T
+
 /* Define to 1 if you have the `clock_gettime' function. */
 #undef HAVE_CLOCK_GETTIME
 

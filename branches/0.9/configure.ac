@@ -70,7 +70,7 @@ AC_CHECK_LIB(m, pow)
 AC_CHECK_LIB(nsl, inet_pton)
 AC_CHECK_HEADERS(netinet/in.h)
 
-AC_CHECK_TYPE([bool])
+AC_CHECK_TYPES([bool])
 
 if test "x$USE_GETTIMEOFDAY" = "x"
 then
@@ -91,6 +91,8 @@ then
 else
     AC_MSG_NOTICE([Forced to use gettimeofday()])
     AC_CHECK_FUNCS([gettimeofday],AC_DEFINE([USE_GETTIMEOFDAY],,[Clock type]),AC_MSG_ERROR([No suitable clock found]))
+    AC_CHECK_FUNCS([clock_gettime])
+    AC_CHECK_TYPES([clockid_t])
 fi
 
 AC_MSG_CHECKING([whether to disable dnsbl checking])
