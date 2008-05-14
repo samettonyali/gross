@@ -29,11 +29,8 @@ enum readlineret_t
 
 #ifdef USE_GETTIMEOFDAY
 /* e.g. OS X does not have clock_gettime, so we will fake one */
-typedef enum
-{
-	CLOCK_KLUDGE
-} clockid_t;
-
+typedef int clockid_t;
+#define CLOCK_KLUDGE 0x715517
 int clock_gettime(clockid_t clk_id, struct timespec *tp);
 #endif /* ! USE_GETTIMEOFDAY */
 
