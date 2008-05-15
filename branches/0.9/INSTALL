@@ -18,6 +18,9 @@ Default install location is /usr/local which can be overridden by
 specifying a --prefix argument to configure.  Run ./configure --help 
 for other options.
 
+It might be a good idea to configure with CFLAGS="-g -O0", it
+will make debugging a lot more effective.
+
 BASIC CONFIGURATION
 
 An example configuration is included in doc/example/grossd.conf:

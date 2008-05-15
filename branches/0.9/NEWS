@@ -7,6 +7,7 @@ Version 1.0.0
 * New match shortcut logic. Now grossd will shortcut after
   a filter match only if no checks are configured (traditional
   greylister) or block_threshold == 0. 
+* A lot of Milter related fixes.
 
 - changed filter_bits default back to 24, as stated in the docs.
 - added grey_reason configuration file option. See block_reason.

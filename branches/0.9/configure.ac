@@ -7,7 +7,6 @@ AM_CONFIG_HEADER(config.h)
 
 CONFIGURE_LINE="$0 $*"
 
-dnl AC_PROG_MAKE_SET
 AC_PROG_CC([cc gcc])
 AC_PROG_INSTALL
 
