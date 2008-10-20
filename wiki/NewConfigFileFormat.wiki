@@ -7,6 +7,7 @@ I found a solid candidate for the config file parser library for Gross. Its name
 
 = Config file prototype =
 
+{{{
 # This is subject to chanage
 
 global {
@@ -89,3 +90,5 @@ policy {
     }
     timelimit = 5s
 }
+
+}}}
