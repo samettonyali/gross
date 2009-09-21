@@ -1,3 +1,4 @@
-This is a port of gross, a greylisting server for postfix as a policy daemon.
+This is a port of gross, a greylisting server. It supports
+Sendmail, Postfix and Exim.
 
 WWW: http://code.google.com/p/gross/
