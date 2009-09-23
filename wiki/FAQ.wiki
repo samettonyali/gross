@@ -1,4 +1,5 @@
 #summary Frequently Asked Questions
+#labels Featured
 
 === Q: My Question isn't here, what do I do? ===
 *Answer*:  Gross is amazingly simple in concept, but it can be daunting to understand what's going on behind the scenes.  Email the [https://lists.utu.fi/mailman/listinfo/gross Gross mailing list] if you have any questions.
